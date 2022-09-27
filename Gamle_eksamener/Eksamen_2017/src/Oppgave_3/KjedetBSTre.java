@@ -1,0 +1,77 @@
+package Oppgave_3;
+
+public class KjedetBSTre<T extends Comparable<T>> {
+private int antall;
+private BinaerTreNode<T> rot;
+
+
+	public KjedetBSTre() {
+		antall = 0;
+		rot = null;
+	}
+ public KjedetBSTre(T element) {
+ antall = 1;
+ rot = new BinaerTreNode<T>(element);
+}
+ public boolean erTom() {
+ return (antall == 0);
+}
+ 
+ public T fjernMin() { 
+	 T min = null;
+	 return min;
+ }
+ public T finnMin() {
+	 if (this.erTom()) {
+		 return null;
+	 }
+	 BinaerTreNode<T> temp = rot;
+	 while (temp.getVenstre()!=null) {
+		 temp = temp.getVenstre();
+	 }
+	 return temp.getElement();
+	 
+ }
+ public KjedetBSTre kopierTre(){
+ KjedetBSTre ny = new KjedetBSTre();
+ ny.rot = kopierTreRek(rot);
+ ny.antall = antall;
+ return ny;
+ }
+
+ public void leggTil(T el) {
+	 
+	 }
+	 
+ private void leggTilRek(T el, BinaerTreNode<T> temp) {
+	 
+	 if (temp.getHoyre()==null&&temp.getVenstre()==null) {
+		 
+	 }
+	 
+	 
+ }
+ 
+ private BinaerTreNode<T> kopierTreRek(BinaerTreNode<T> node) {
+	 
+	 BinaerTreNode<T> nyVenstre;
+	 BinaerTreNode<T> nyHøgre;
+	 BinaerTreNode<T> nyNode;
+	 
+	 if (node==null) {
+		 return null;
+	 }
+	 nyVenstre = kopierTreRek(node.getVenstre());
+	 nyHøgre = kopierTreRek(node.getHoyre());
+	 nyNode = new BinaerTreNode<T>(node.getElement(), nyVenstre, nyHøgre);
+	 return nyNode;	
+	 
+	 
+	 
+ }
+ 
+
+ 
+ //…andre metoder
+}//class
+

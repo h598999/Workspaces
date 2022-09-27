@@ -1,0 +1,47 @@
+package APITest;
+
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.Scanner;
+
+public class Main {
+	
+	public static void main(String[] args) {
+		
+		try {
+			//Public API:
+			//https://www.metaweather.com/api/location/search/?query=<CITY>
+			//https://www.metaweather.com/api/location/<WOEID>/
+			
+			URL url = new URL("https://www.metaweather.com/api/location/search/?query=London");
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.connect();
+			
+			//Check if connection is made
+			int responseCode = conn.getResponseCode();
+			
+			//200 OK
+			if (responseCode != 200) {
+				throw new RuntimeException("HttpsRespondeCode: " + responseCode);
+			} else {
+				StringBuilder informationString = new StringBuilder();
+				Scanner scanner = new Scanner(url.openStream());
+				
+				while (scanner.hasNext()) {
+					informationString.append(scanner.nextLine());
+				}
+				scanner.close();
+				System.out.println(informationString);
+				
+				//JSON simple library setup with maven
+				JSONParser parse = new JSONParser();
+				
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+	}
+
+}

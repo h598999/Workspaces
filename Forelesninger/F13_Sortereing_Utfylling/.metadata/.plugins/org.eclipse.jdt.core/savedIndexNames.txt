@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+C:\Users\jonas\Desktop\Skule\Dat_102\Workspaces\Forelesninger\F13_Sortereing_Utfylling\.metadata\.plugins\org.eclipse.jdt.core
+3923088715.index
+381197718.index
+1865797976.index

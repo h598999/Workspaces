@@ -1,0 +1,38 @@
+package Iterators;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+import no.hvl.dat102.Entry;
+import no.hvl.dat102.Node;
+
+public class linkedValueIterator<K,V> implements Iterator<V> {
+
+	private Node<Entry<K,V>> nextNode;
+	
+	public linkedValueIterator(Node<Entry<K,V>> firstNode) {
+		nextNode = firstNode;
+	}
+	
+	@Override
+	public boolean hasNext() {
+		return nextNode != null;
+	}
+
+	@Override
+	public K next() {
+		
+		K result;
+		
+		if (hasNext()) {
+			result = nextNode.getElement().getKey();
+			nextNode = nextNode.getNext();
+		}
+		else {
+			throw new NoSuchElementException();
+		}
+		return result;
+	}
+
+	
+}

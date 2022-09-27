@@ -1,0 +1,36 @@
+package Oppgave_6;
+
+public class KjedetIndeksertListe<T>{
+private LinearNode<T> første;
+private LinearNode<T> siste;
+private int antall;
+/* Konstruktør */
+KjedetIndeksertListe() {
+//Oppretter første og siste
+LinearNode<T> første = null;
+LinearNode<T> siste = null;
+antall = 0;
+}
+
+public void leggTilForan(T element) {
+	antall++;
+	LinearNode<T> temp = første.getNeste();
+	LinearNode<T> forrige = første;
+	LinearNode<T> nyNode = new LinearNode<T>(element);
+	nyNode.setNeste(forrige);
+	for (int i = 0; i<antall; i++) {
+		temp = forrige;
+		temp = temp.getNeste();
+		forrige = forrige.getNeste();
+	}
+	første = nyNode;
+	
+}
+
+public void fjernDelListe(int indeks, int n) {
+	
+	
+}
+//andre metoder
+}
+

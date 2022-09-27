@@ -1,0 +1,17 @@
+package KjedetBag;
+
+public class BagTesting {
+	
+	public static void main(String[] args) {
+		KjedetBag<String> bag = new KjedetBag<String>();
+		bag.leggTil("Jonas");
+		bag.leggTil("Even");
+		bag.leggTil("Kari");
+		
+	String[] stringtab = bag.tilTabell();
+	System.out.println(stringtab[1]);
+	
+		
+	}
+
+}

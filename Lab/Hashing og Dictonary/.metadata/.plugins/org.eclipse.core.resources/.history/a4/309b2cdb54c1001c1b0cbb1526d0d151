@@ -1,0 +1,238 @@
+package Dictonaries;
+
+import java.util.Iterator;
+
+import ADT.DictonaryADT;
+import hjelpeklasser.Entry;
+import hjelpeklasser.TableEntry;
+
+public class HashedDictonary<K,V> implements DictonaryADT<K,V> {
+	
+	
+	//The dictonary
+	private int numberOfEntries;
+	private static final int DEFAULT_CAPACITY = 5;
+	private static final int MAX_CAPACITY = 10000;
+
+	//The hashtable
+	private TableEntry<K,V>[] hashTable;
+	private int tableSize;
+	private static final int MAX_SIZE = 2*MAX_CAPACITY;
+	private boolean initialized = false;
+	private static final double LOAD_FACTOR = 0.5;
+	
+	public HashedDictonary() {
+		this(DEFAULT_CAPACITY);
+	}
+	
+	public HashedDictonary(int initialCapacity) {
+		checkCapacity(initialCapacity);
+		numberOfEntries = 0;
+		
+		//Set up hashtable
+		// Initial size of hashtable is the same as initalCapacity if it is a prime number wich is not 2
+		//otherwise increase it until it is prime
+		tableSize = getNextPrime(initialCapacity);
+		checkSize(tableSize);//Check for max array size
+		
+		@SuppressWarnings( "unchecked" )
+		TableEntry<K,V>[] tempTable = (TableEntry<K,V>[]) new TableEntry[tableSize];
+		hashTable = tempTable;
+		initialized = true;
+	}
+	
+	@Override
+	public void add(K key, V value) {
+		
+		checkInitialization();
+		
+		if ((key == null)||(value == null)) {
+			throw new IllegalArgumentException();
+		} else {
+			
+			int index = getHashIndex(key);
+			index = probe(index,key);
+			
+			assert (index>= 0) && (index < hashTable.length);
+			if ((hashTable[index]==null)||hashTable[index].isRemoved()) {
+				//not found insert as new entry
+				hashTable[index] = new TableEntry<K,V>(key, value);
+				numberOfEntries++;
+				
+			}
+			else {
+			
+				hashTable[index].setValue(value);
+			}
+			
+			if (isHashTableTooFull()){
+				enlargeHashTable();
+			}
+		}
+		
+		
+	}
+
+	@Override
+	public V remove(K key) {
+		
+		checkInitialization();
+		V removedValue = null;
+		
+		int index = getHashIndex(key);
+		index = locate(index,key);
+		
+		if (index != -1) {
+			removedValue = hashTable[index].getValue();
+			hashTable[index].setToRemoved();
+			numberOfEntries--;
+		}
+		return removedValue;
+		
+	}
+
+	@Override
+	public V getValue(K key) {
+		checkInitialization();
+		V value = null;
+		
+		int index = getHashIndex(key);
+		index = locate(index,key);
+		
+		if (index != -1) {
+			value = hashTable[index].getValue();
+		}
+		
+		return value;
+	}
+
+	@Override
+	public boolean containsKey(K key) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Iterator<K> getKeyIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iterator<V> getValueIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int getSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private int locate(int index, K key) {
+		boolean funnet = false;
+		
+		while (!funnet &&(hashTable[index]!=null)) {
+			if (hashTable[index].isIn()&&key.equals(hashTable[index].getKey())) {
+				funnet = true;
+			} else {
+				index = (index+1) % hashTable.length;
+			}	
+		}
+		int result = -1;
+		if (funnet)
+			result = index;
+		return result;
+	}
+	
+	private int getHashIndex(K key) {
+		return key.hashCode();
+	}
+	
+	private void checkInitialization() {
+		if (initialized = false)
+			return;
+	}
+	
+	private void checkCapacity(int currentCapacity) {
+		
+	}
+	
+	private int getNextPrime(int currentnumber) {
+		int i = 0;
+		
+		return i;
+	}
+	
+	private void checkSize(int size) {
+		
+	}
+	
+	private boolean isHashTableTooFull() {
+		return numberOfEntries/hashTable.length>LOAD_FACTOR;
+	}
+	
+	private void enlargeHashTable() {
+		
+		if (initialized) {
+		
+		TableEntry<K,V>[] oldTable = hashTable;
+		int oldSize = hashTable.length;
+		int newSize = getNextPrime(hashTable.length*2);
+		
+		@SuppressWarnings("unchecked")
+		TableEntry<K,V>[] temp = (TableEntry<K,V>[]) new TableEntry[newSize];
+		hashTable = temp;
+		
+		for (int i = 0; i<oldSize; i++) {
+			
+			if ((oldTable[i]!=null)&&oldTable[i].isIn()) {
+				add(oldTable[i].getKey(), oldTable[i].getValue());
+			}
+		}
+		}
+	}
+	
+	private int probe(int index, K key) {
+		boolean funnet = false;
+		int removedStateIndex = -1;
+		
+		while (!funnet &&(hashTable[index]!=null)) {
+			if (hashTable[index].isIn()) {
+				
+				if (key.equals(hashTable[index].getKey())) {
+					funnet = true;
+				} else {
+					index = (index+1)%hashTable.length;
+				}
+			} else {
+				
+				if (removedStateIndex==-1) {
+					removedStateIndex = index;
+					index = (index +1)%hashTable.length;
+				}
+			}
+				
+			}
+		if ((funnet)|| (removedStateIndex==-1)) {
+			return index;
+		}
+		else 
+			return removedStateIndex;
+		}
+	}
+
+

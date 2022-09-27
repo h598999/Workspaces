@@ -1,0 +1,63 @@
+package no.hvl.dat102;
+
+import java.util.Iterator;
+
+import ADT.DictonaryADT;
+
+public class Dictonary<K,V> implements DictonaryADT {
+
+	@Override
+	public void add(Object key, Object value) {
+		
+		
+	}
+
+	@Override
+	public Object remove(Object key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Object getValue(Object key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean containsKey(Object key) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Iterator<K> getKeyIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iterator<V> getValueIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int getSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

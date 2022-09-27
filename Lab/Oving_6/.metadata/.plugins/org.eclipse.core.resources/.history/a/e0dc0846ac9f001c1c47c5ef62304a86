@@ -1,0 +1,44 @@
+package Insertion_Sort;
+
+public class Oppgave_2_a {
+	
+	public static  <T extends Comparable<? super T>> void Sorteringvedinnsettingmedtoelementer(T[] a, int n) {
+		Sorteringvedinnsettingmedtoelementer(a, 0, n - 1);
+	}
+	
+	public static  <T extends Comparable<? super T>> void Sorteringvedinnsettingmedtoelementer(T[] a, int start, int slutt) {
+	 
+		Sorter.swap(a, start ,Sorter.finnMinstePos(a, start, slutt));
+		for (int i = start+1; i<=slutt; i++) {
+			T temp = a[i];
+			T temp1 = a[i+1];
+			T tempstørst;
+			T tempminst;
+			if (temp.compareTo(temp1)>0) {
+				tempstørst = temp;
+				tempminst = temp1;
+			} else {
+				tempstørst = temp1;
+				tempminst = temp;
+			}
+			int j = i-1;
+			boolean avsluttet = false;
+			
+			while(j>=0&&!avsluttet) {
+				if (tempstørst.compareTo(a[j])<0) {
+					a[j+1] = a[j];
+					j--;
+				} else {
+					avsluttet = true;
+				}
+			}
+			a[j+1] = tempminst;
+			a[j+3] = tempstørst;
+			
+			
+		}
+		
+	}
+	
+
+}

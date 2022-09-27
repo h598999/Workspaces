@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.jdt.junit.launchconfig">
+    <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_PATHS">
+        <listEntry value="/Øving_5_Oppgave_1/TestOrdnetListe/no/hvl/dat102/adt"/>
+    </listAttribute>
+    <listAttribute key="org.eclipse.debug.core.MAPPED_RESOURCE_TYPES">
+        <listEntry value="2"/>
+    </listAttribute>
+    <stringAttribute key="org.eclipse.jdt.junit.CONTAINER" value="=Øving_5_Oppgave_1/TestOrdnetListe&lt;no.hvl.dat102.adt"/>
+    <booleanAttribute key="org.eclipse.jdt.junit.KEEPRUNNING_ATTR" value="false"/>
+    <stringAttribute key="org.eclipse.jdt.junit.TEST_KIND" value="org.eclipse.jdt.junit.loader.junit5"/>
+    <stringAttribute key="org.eclipse.jdt.launching.MAIN_TYPE" value=""/>
+    <stringAttribute key="org.eclipse.jdt.launching.PROJECT_ATTR" value="Øving_5_Oppgave_1"/>
+    <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-ea"/>
+</launchConfiguration>

@@ -1,0 +1,49 @@
+package Iterators;
+
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
+import Dictonaries.HashedDictonary;
+
+public class KeyIterator<K,V> implements Iterator<K> {
+
+	private int currentIndex;
+	private int NumberLeft;
+	private HashedDictonary<K,V> dictonary;
+	
+	public KeyIterator(HashedDictonary<K,V> dictonary) {
+		this.dictonary = dictonary;
+		currentIndex = 0;
+		NumberLeft = dictonary.getSize();
+	}
+	
+	@Override
+	public boolean hasNext() {
+		return NumberLeft > 0;
+	}
+	
+	@Override
+	public K next() {
+		
+		K result = null;
+		
+		if (hasNext()) {
+			while ((dictonary.getHashTable()[currentIndex]==null)||(dictonary.getHashTable()[currentIndex].isRemoved())) {
+				currentIndex++;
+			}
+			result = dictonary.getHashTable()[currentIndex].getKey();
+			NumberLeft--;
+			currentIndex++;
+		} else {
+			throw new NoSuchElementException();
+		}
+		return result;
+	}
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException();
+	}
+
+	
+	
+}

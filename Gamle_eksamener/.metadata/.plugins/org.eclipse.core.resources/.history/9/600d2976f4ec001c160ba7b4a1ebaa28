@@ -1,0 +1,30 @@
+package Entiteter;
+
+public class Vare {
+
+	private int id;
+	private String barcode;
+	private int antall;
+	public int getAntall() {
+		return antall;
+	}
+	public void setAntall(int antall) {
+		this.antall = antall;
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getBarcode() {
+		return barcode;
+	}
+	public void setBarcode(String barcode) {
+		this.barcode = barcode;
+	}
+	
+	
+	
+	
+}

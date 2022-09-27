@@ -1,0 +1,101 @@
+package Dictonaries;
+
+import java.util.Iterator;
+
+import ADT.DictonaryADT;
+import hjelpeklasser.Entry;
+
+public class HashedDictonary<K,V> implements DictonaryADT<K,V> {
+	
+	
+	//The dictonary
+	private int numberOfEntries;
+	private static final int DEFAULT_CAPACITY = 5;
+	private static final int MAX_CAPACITY = 10000;
+
+	//The hashtable
+	private Entry<K,V>[] hastable;
+	private int tableSize;
+	private static final int MAX_SIZE = 2*MAX_CAPACITY;
+	private boolean initialized = false;
+	private static final double LOAD_FACTOR = 0.5;
+	
+	public HashedDictonary() {
+		this(DEFAULT_CAPACITY);
+	}
+	
+	public HashedDictonary(int initialCapacity) {
+		checkCapacity(initialCapacity);
+		numberOfEntries = 0;
+		
+		//Set up hashtable
+		// Initial size of hashtable is the same as initalCapacity if it is a prime number wich is not 2
+		//otherwise increase it until it is prime
+		tableSize = getNextPrime(initialCapacity);
+		
+		
+	}
+	
+	@Override
+	public void add(K key, V value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public V remove(K key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public V getValue(K key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean containsKey(K key) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Iterator<K> getKeyIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iterator<V> getValueIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int getSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private void checkCapacity(int currentCapacity) {
+		
+	}
+	
+	private int getNextPrime(int currentnumber) {
+		
+	}
+
+}

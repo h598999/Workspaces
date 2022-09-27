@@ -1,0 +1,44 @@
+package Insertion_Sort;
+
+import java.util.Random;
+
+public class Oppgave_1 {
+	
+	public static void main(String[] args) {
+	
+	Random tilfeldig = new Random();
+	long l = 3200L;
+	Random random = new Random(l);
+	int n = 32000;
+	int antal = 10;
+	
+	Integer[][] a = new Integer[antal][n];
+	
+	for (int i = 0; i<antal; i++) {
+		for (int j = 0; j<n; j++) {
+			a[i][j] = tilfeldig.nextInt();
+		}
+	}
+	
+	Long tidfør = System.currentTimeMillis();
+	
+	
+	for (int i = 0; i<antal; i++) {
+		Sorter.sorteringVedInssetting(a[i], n);
+	}
+	Long tidetter = System.currentTimeMillis();
+	System.out.println((tidetter-tidfør));
+	
+Long tidfør1 = System.currentTimeMillis();
+	
+	
+	for (int i = 0; i<antal; i++) {
+		Sorter.sorteringVedInssettingmodifisert(a[i], 0, n);
+	}
+	Long tidetter1 = System.currentTimeMillis();
+	System.out.println((tidetter1-tidfør1));
+	
+	
+
+}
+}

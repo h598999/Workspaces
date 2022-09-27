@@ -1,0 +1,55 @@
+package no.hvl.dat100;
+
+public class KjedetBag<T> {
+	private int antall;
+	private LinearNode<T> forste;
+	
+	public KjedetBag() {
+		antall = 0;
+		forste = null;
+	}
+	
+	public void leggTil(T el) {
+		LinearNode<T>nynode = new LinearNode<T>(el);
+		nynode.setNeste(forste);
+		forste = nynode;
+		antall++;
+	}
+	
+	
+	public T fjern(T el) {
+boolean slettet = false;
+		
+		LinearNode<T>forrige = forste;
+		LinearNode<T>denne = forrige.getNeste();
+		for (int sok = 0; sok<antall&&!slettet; sok++) {
+			
+			if(denne.getElement().equals(el)) {
+				forrige.setNeste(denne.getNeste());
+				slettet = true;
+			} else {
+				forrige = forrige.getNeste();
+			}
+		}
+		
+		return denne.getElement();
+		
+	}
+	
+	public boolean inneholder(T el) {
+		boolean funnet = false;
+		LinearNode<T>aktuell = forste;
+		for (int sok = 0; sok<antall&&!funnet; sok++) {
+			if (aktuell.getElement().equals(el)) {
+				funnet = true;
+			} else {
+				aktuell = aktuell.getNeste();
+			}
+		}
+		return funnet;
+	}
+	
+	
+}
+
+

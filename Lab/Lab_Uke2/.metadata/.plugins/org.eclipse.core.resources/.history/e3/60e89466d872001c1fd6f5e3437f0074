@@ -1,0 +1,27 @@
+package no.hvl.dat100;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class liste {
+	
+	public static void main(String[] args) {
+		List<Integer> lister = new ArrayList<>(5);
+		lister.add(1);
+		lister.add(2);
+		lister.add(3);
+		lister.add(3);
+		lister.add(4);
+	
+		if (lister.contains(7))
+			System.out.println("True");
+		else
+			System.out.println("False");
+		System.out.println(lister.get(3));
+		System.out.println(lister.get(4));
+		
+	
+		
+	}
+
+}

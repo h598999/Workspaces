@@ -1,0 +1,56 @@
+package JPA;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.net.http.HttpResponse.BodyHandlers;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+public class VareGetter {
+
+	public static void getVare(int id) throws IOException, InterruptedException {
+		Transcript transcript = new Transcript();
+		transcript.setId(id);
+		HttpClient httpClient = HttpClient.newHttpClient();
+		Gson gson = new Gson();
+		JsonParser parser = new JsonParser();
+	
+		
+		try {
+			HttpRequest getRequest = HttpRequest.newBuilder()
+					.uri(new URI("https://www.foodrepo.org/api/v3/products/" + transcript.getId()))
+					.header("Authorization", "Token token=536f731144fa1ba705ebe3338271ba5f")
+					.build();
+			HttpResponse<String> getResponse = httpClient.send(getRequest, BodyHandlers.ofString());
+			System.out.println(getResponse.body());
+			
+			while (true) {
+				 getResponse = httpClient.send(getRequest, BodyHandlers.ofString());
+				JsonObject convertedObject = gson.fromJson(getResponse.body(), JsonObject.class).get("data").getAsJsonObject();
+				System.out.println(convertedObject.get("status"));
+				if (convertedObject.get("status").getAsString().equals("complete"))
+					break;
+				Thread.sleep(1000);
+			}
+			
+			
+		} catch (URISyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("Vare gotten");
+		System.out.println(transcript.getId());
+		System.out.println(transcript.getBarcode());
+		
+	}
+	
+	
+	
+}

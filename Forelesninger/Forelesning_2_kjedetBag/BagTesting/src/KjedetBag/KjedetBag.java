@@ -1,0 +1,89 @@
+package KjedetBag;
+import TabellBag.TabellBag;
+public class KjedetBag<T> {
+	private int antall;
+	private LinearNode<T> forste;
+	
+	public KjedetBag() {
+		antall = 0;
+		forste = null;
+	}
+	
+	public void leggTil(T el) {
+		LinearNode<T>nynode = new LinearNode<T>(el);
+		nynode.setNeste(forste);
+		forste = nynode;
+		antall++;
+	}
+	
+	
+	public boolean fjern(T el) {
+		boolean slettet = false;
+		int sok = 0;
+		LinearNode<T>forrige = forste;
+		while (!slettet&&sok<antall&&!erTom()) {
+			LinearNode<T>denne = forrige.getNeste();
+			if(denne.getElement().equals(el)) {
+				forrige.setNeste(denne.getNeste());
+				slettet = true;
+				antall--;
+			} else {
+				forrige = forrige.getNeste();
+				sok++;
+			}
+		}
+		
+		return slettet;
+		
+	}
+	
+	public boolean inneholder(T el) {
+		boolean funnet = false;
+		LinearNode<T>aktuell = forste;
+		int sok  = 0;
+		while(aktuell!=null&&funnet==false&&sok<antall) {
+			if (aktuell.getElement().equals(el)) {
+				funnet = true;
+			} else {
+				aktuell = aktuell.getNeste();
+				sok++;
+			}
+		}
+		return funnet;
+	}
+	public boolean erTom() {
+		if (antall==0)
+			return false;
+		else 
+			return true;
+			
+	}
+	
+	public int getAntall() {
+		return antall;
+	}
+	
+	public void nullstill() {
+		LinearNode<T> slett = forste;
+		for (int i = 0; i<antall; i++) {
+			fjern(slett.getElement());
+			slett = slett.getNeste();
+		}
+		antall = 0;
+		forste = null;
+		
+	}
+	public T[] tilTabell() {
+	TabellBag<T> tabell = new TabellBag<T>(antall);
+	LinearNode<T> leggestil = forste;
+	for (int i = 0; i<antall; i++) {
+		tabell.add(leggestil.getElement());
+		leggestil = leggestil.getNeste();
+	}
+	return tabell.toArray();
+	}
+	
+	
+}
+
+

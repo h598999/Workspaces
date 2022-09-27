@@ -1,0 +1,61 @@
+import Ekstra.LinearNode;
+
+public class KjedetUordnetListe<T extends Comparable<T>> {
+ private int antall;
+ private LinearNode<T> foerste;
+ public KjedetUordnetListe() {
+antall = 0;
+foerste = null;
+ }
+ public void settInn(T el) {
+	 LinearNode<T> nyNode = new LinearNode<T>(el);
+	 nyNode.setNeste(foerste);
+	 foerste = nyNode;
+ }
+ 
+ public void flyttFoersteTilSiste() {
+	
+	 LinearNode<T> siste = foerste;
+	for (int i = 0; i<antall; i++) {
+		 siste = siste.getNeste();
+	 }
+	 T temp = siste.getElement();
+	 siste.setElement(foerste.getElement());
+	 foerste.setElement(temp);
+ }
+ 
+ public String toString() {
+	 return toStringRec(foerste);
+ }
+ 
+ private String toStringRec(LinearNode<T> temp) {
+	 String str = "";
+	 if (temp!=null) {
+		 str += temp.getElement().toString() + "\n" + (temp.getNeste());
+	 }
+	 return str;
+ }
+ 
+ public T finnNestMinste() {
+	 T svar = null;
+	 if(antall>=2) {
+		 LinearNode<T> minste = foerste;
+		 LinearNode<T> nestMinste = foerste;
+		 LinearNode<T> denne = foerste.getNeste();
+		 while (denne!=null) {
+			 if (denne.getElement().compareTo(minste.getElement())<0) {
+				 nestMinste = minste;
+				 minste = denne;
+			 } else {
+				 if (denne.getElement().compareTo(nestMinste.getElement())<0) {
+					 nestMinste = denne;
+				 }
+				 denne = denne.getNeste();
+			 }
+			 svar = nestMinste.getElement();
+		 }
+	 }
+	 return svar;
+ }
+ 
+}

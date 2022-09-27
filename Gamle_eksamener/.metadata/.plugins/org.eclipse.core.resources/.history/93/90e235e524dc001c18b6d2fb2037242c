@@ -1,0 +1,32 @@
+package Oppgave_3;
+
+public class KjedetBSTre<T extends Comparable<T>> implements BSTreADT<T> {
+private int antall;
+private BinaerTreNode<T> rot;
+public KjedetBSTre() {
+ antall = 0;
+ rot = null;
+}
+ public KjedetBSTre(T element) {
+ antall = 1;
+ rot = new BinaerTreNode<T>(element);
+}
+ public boolean erTom() {
+ return (antall == 0);
+}
+ 
+ public T fjernMin() {//… skal ikke lages}
+ public T finnMin() {//… Fyll ut}
+ public KjedetBSTre kopierTre(){
+ KjedetBSTre ny = new KjedetBSTre();
+ ny.rot = kopierTreRek(rot);
+ ny.antall = antall;
+ return ny;
+ }
+ private BinaerTreNode<T> kopierTreRek(BinaerTreNode<T> t){
+ //… Fyll ut
+ }
+ 
+ //…andre metoder
+}//class
+

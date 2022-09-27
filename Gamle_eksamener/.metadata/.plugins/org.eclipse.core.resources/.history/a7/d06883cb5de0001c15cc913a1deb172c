@@ -1,0 +1,57 @@
+package Oppgave_3;
+
+public class TabellHaug<T extends Comparable<T>> {
+	private T[] data;
+	private int antall;// antall elementer
+	private static final int STDK = 100;
+	public TabellHaug() {
+	 data = (T[]) new Comparable[STDK];
+	 antall = 0;
+	}
+	 public boolean erTom() {
+	 return antall == 0;
+	}
+
+	 public void leggTilElement(T el) {
+	 if (antall == data.length){
+	 utvidTabell();
+	 }
+	 data[antall] = el; // Plasser den nye helt sist
+	 antall++;
+	 if (antall > 1){
+	 reparerOpp(); // Bytt om oppover hvis nødvendig
+	 }
+	}
+	 private void reparerOpp() {
+		 
+		 // finner sist lagt til element
+		 int sistlagttilindeks = antall-1;
+		 int foreldreindeks = sistlagttilindeks/2;
+		 T sistlagttil = data[sistlagttilindeks];
+		 boolean ferdig = false;
+		 while(sistlagttilindeks>=0&&!ferdig) {
+			 if (sistlagttil.compareTo(data[foreldreindeks])<0) {
+				 swap(data,sistlagttilindeks,foreldreindeks);
+				 sistlagttilindeks = foreldreindeks;
+				 foreldreindeks = sistlagttilindeks/2;
+			 } else {
+				 ferdig = true;
+			 }
+		 } 
+	}
+	 public boolean erHaug(T data[]) {
+	return erHaug(data,0,antall-1);
+	}
+	 private boolean erHaug(T data[], int r, int m) { 
+		 return true;
+	 }
+	 private void utvidTabell() {
+		 
+	 }
+	 
+	 private void swap(T[] a, int b, int c) {
+		 T temp = a[b];
+		 a[b] = a[c];
+		 a[c] = temp;
+	 }
+	}//class

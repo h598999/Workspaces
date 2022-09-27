@@ -1,0 +1,1913 @@
+!SESSION 2022-02-11 20:16:26.622 -----------------------------------------------
+eclipse.buildId=4.21.0.I20210906-0500
+java.version=17.0.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=no_NO
+Framework arguments:  -product org.eclipse.epp.package.java.product -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.java.product -data C:\Users\jonas\Desktop\Skule\Dat_102\Workspaces\Kladdeoppgaver\Kladdeoppgave_3 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.oomph.p2.core 2 0 2022-02-11 20:16:28.286
+!MESSAGE Failed to register the thread safe credentials providers: 'java.util.Map org.eclipse.core.internal.runtime.AdapterManager.getFactories()'
+
+!ENTRY org.eclipse.jface 2 0 2022-02-11 20:16:30.152
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2022-02-11 20:16:30.152
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@77b27b57,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.lsp4e.symbolinworkspace,Go to Symbol in Workspace,
+		,
+		Category(org.eclipse.lsp4e.category,Language Servers,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@7adff6cb,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2022-02-11 20:16:30.152
+!MESSAGE A conflict occurred for ALT+SHIFT+R:
+Binding(ALT+SHIFT+R,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.edit.text.java.rename.element,Rename - Refactoring ,
+		Rename the selected element,
+		Category(org.eclipse.jdt.ui.category.refactoring,Refactor - Java,Java Refactoring Actions,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@13ebccd,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+SHIFT+R,
+	ParameterizedCommand(Command(org.eclipse.ui.edit.rename,Rename,
+		Rename the selected item,
+		Category(org.eclipse.ui.category.file,File,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@4e80960a,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.egit.ui 2 0 2022-02-11 20:16:32.917
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\jonas'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-11 20:37:24.311
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package no.hvl.dat102.mengde.kjedet;
+
+//********************************************************************
+// Kjedet implementasjon av en mengde. 
+//********************************************************************
+import java.util.Iterator;
+import java.util.Random;
+
+import no.hvl.dat102.exception.EmptyCollectionException;
+import no.hvl.dat102.mengde.adt.MengdeADT;
+
+public class KjedetMengde<T> implements MengdeADT<T> {
+	private static Random rand = new Random();
+	private int antall; // antall elementer i mengden
+	private LinearNode<T> start;
+
+	/**
+	 * Oppretter en tom mengde.
+	 */
+	public KjedetMengde() {
+		antall = 0;
+		start = null;
+	}//
+
+	@Override
+	public void leggTil(T element) {
+		if (!(inneholder(element))) {
+			LinearNode<T> node = new LinearNode<T>(element);
+			node.setNeste(start);
+			start = node;
+			antall++;
+		}
+	}
+
+	@Override
+	public void leggTilAlle(MengdeADT<T> m2) {
+		Iterator<T> teller = m2.oppramser();
+		while (teller.hasNext()) {
+			leggTil(teller.next());
+		}
+	}
+
+	@Override
+	public T fjernTilfeldig() {
+		if (erTom())
+			throw new EmptyCollectionException("mengde");
+
+		LinearNode<T> forgjenger, aktuell;
+		T resultat = null;
+
+		int valg = rand.nextInt(antall) + 1;
+		if (valg == 1) {
+			resultat = start.getElement();
+			start = start.getNeste();
+		} else {
+			forgjenger = start;
+			for (int nr = 2; nr < valg; nr++) {
+				forgjenger = forgjenger.getNeste();
+			}
+			aktuell = forgjenger.getNeste();
+			resultat = aktuell.getElement();
+			forgjenger.setNeste(aktuell.getNeste());
+		}
+		antall--;
+
+		return resultat;
+
+	}//
+
+	@Override
+	public T fjern(T element) {
+
+		if (erTom())
+			throw new EmptyCollectionException("mengde");
+
+		boolean funnet = false;
+		LinearNode<T> forgjenger, aktuell;
+		T resultat = null;
+		if (start.getElement().equals(element)) {// Sletter foran
+			resultat = start.getElement();
+			start = start.getNeste();
+			antall--;
+		} else {// Gjennomgår den kjedete strukturen
+			forgjenger = start;
+			aktuell = start.getNeste();
+			for (int sok = 2; sok <= antall && !funnet; sok++) {
+				if (aktuell.getElement().equals(element))
+					funnet = true;
+				else {
+					forgjenger = aktuell.getNeste();
+				}
+			}
+			if (funnet) {
+				resultat = aktuell.getElement();
+				forgjenger.setNeste(aktuell.getNeste()); // Slette midt inni/bak
+				antall--;
+			}
+		}
+		return resultat;
+
+	}//
+
+	@Override
+	public boolean inneholder(T element) {
+		boolean funnet = false;
+		LinearNode<T> aktuell = start;
+		for (int soek = 0; soek < antall && !funnet; soek++) {
+			if (aktuell.getElement().equals(element)) {
+				funnet = true;
+			} else {
+				aktuell = aktuell.getNeste();
+			}
+		}
+		return funnet;
+	}
+	/*
+	 * Når vi overkjører (ovverride) equals- meteoden er det anbefalt at vi også
+	 * overkjører hashcode-metoden da en del biblioteker bruker hascode sammen med
+	 * equals. Vi kommer tilbake til forklaring og bruk av hashcode senere i faget.
+	 */
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + antall;
+		result = prime * result + ((start == null) ? 0 : start.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object ny) {
+		
+		if (this == ny) {
+			return true;
+		}
+		if (ny == null) {
+			return false;
+		}
+		if (getClass() != ny.getClass()) {
+			return false;
+		} 
+			boolean likeMengder = true;
+			
+			MengdeADT<T>m2 = (KjedetMengde<T>)ny;
+			if (this.antall!=m2.antall()) {
+				likeMengder = false;
+			} else {
+				Iterator<T> teller = m2.oppramser();
+			
+			while(teller.hasNext()&&likeMengder) {
+				T element = teller.next();
+				if(!this.inneholder(element))
+					likeMengder = false;
+			}
+			
+	}
+			return likeMengder;		
+	}
+
+	@Override
+	public boolean erTom() {
+		return antall == 0;
+	}
+
+	@Override
+	public int antall() {
+		return antall;
+	}
+
+	@Override
+	public MengdeADT<T> union(MengdeADT<T> m2) {
+		// TODO
+		MengdeADT<T> union = new KjedetMengde<T>();
+		LinearNode<T> aktuell = start;
+		while (aktuell!=null) {
+			((KjedetMengde<T>) union).settInn(aktuell.getElement());
+			aktuell = aktuell.getNeste();
+		}
+		Iterator<T> teller = m2.oppramser();
+		
+		while(teller.hasNext()) {
+			T element = teller.next();
+			//test på om element i m2 ikke fins i m1(this)
+			//m1 er den samme hele tiden
+			if (!inneholder(element))
+				((KjedetMengde<T>un))
+		}
+
+		return union;
+	}//
+
+	@Override
+	public MengdeADT<T> snitt(MengdeADT<T> m2) {
+		// TODO
+		MengdeADT<T> snittM = new KjedetMengde<T>();
+		T element;
+		/*
+		 * ..
+		 * 
+		 * if (this.inneholder(element)) ((KjedetMengde<T>) snittM).settInn(element);
+		 */
+		return snittM;
+	}
+
+	@Override
+	public MengdeADT<T> differens(MengdeADT<T> m2) {
+		// TODO
+		MengdeADT<T> differensM = new KjedetMengde<T>();
+		T element;
+		/*
+		 * Fyll ut
+		 * 
+		 */
+
+		return differensM;
+	}
+
+	@Override
+	public boolean undermengde(MengdeADT<T> m2) {
+		// TODO
+		boolean erUnderMengde = true;
+		// ...
+		return erUnderMengde;
+	}
+
+	@Override
+	public Iterator<T> oppramser() {
+		return new KjedetIterator<T>(start);
+	}
+
+	private void settInn(T element) {
+		LinearNode<T> nyNode = new LinearNode<T>(element);
+		nyNode.setNeste(start);
+		start = nyNode;
+		antall++;
+	}
+
+}// class
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3448)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3046)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:501)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:201)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:266)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:597)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1142)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:740)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:806)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1319)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.ui 4 2 2022-02-11 20:37:24.312
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.ui".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3448)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3046)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:501)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:201)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:266)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:597)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1142)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:740)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:806)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1319)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.ui 4 0 2022-02-11 20:37:24.313
+!MESSAGE Error in JDT Core during reconcile
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3448)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3046)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:501)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:201)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:266)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:597)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1142)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:740)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:806)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1319)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-11 20:37:24.322
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package no.hvl.dat102.mengde.kjedet;
+
+//********************************************************************
+// Kjedet implementasjon av en mengde. 
+//********************************************************************
+import java.util.Iterator;
+import java.util.Random;
+
+import no.hvl.dat102.exception.EmptyCollectionException;
+import no.hvl.dat102.mengde.adt.MengdeADT;
+
+public class KjedetMengde<T> implements MengdeADT<T> {
+	private static Random rand = new Random();
+	private int antall; // antall elementer i mengden
+	private LinearNode<T> start;
+
+	/**
+	 * Oppretter en tom mengde.
+	 */
+	public KjedetMengde() {
+		antall = 0;
+		start = null;
+	}//
+
+	@Override
+	public void leggTil(T element) {
+		if (!(inneholder(element))) {
+			LinearNode<T> node = new LinearNode<T>(element);
+			node.setNeste(start);
+			start = node;
+			antall++;
+		}
+	}
+
+	@Override
+	public void leggTilAlle(MengdeADT<T> m2) {
+		Iterator<T> teller = m2.oppramser();
+		while (teller.hasNext()) {
+			leggTil(teller.next());
+		}
+	}
+
+	@Override
+	public T fjernTilfeldig() {
+		if (erTom())
+			throw new EmptyCollectionException("mengde");
+
+		LinearNode<T> forgjenger, aktuell;
+		T resultat = null;
+
+		int valg = rand.nextInt(antall) + 1;
+		if (valg == 1) {
+			resultat = start.getElement();
+			start = start.getNeste();
+		} else {
+			forgjenger = start;
+			for (int nr = 2; nr < valg; nr++) {
+				forgjenger = forgjenger.getNeste();
+			}
+			aktuell = forgjenger.getNeste();
+			resultat = aktuell.getElement();
+			forgjenger.setNeste(aktuell.getNeste());
+		}
+		antall--;
+
+		return resultat;
+
+	}//
+
+	@Override
+	public T fjern(T element) {
+
+		if (erTom())
+			throw new EmptyCollectionException("mengde");
+
+		boolean funnet = false;
+		LinearNode<T> forgjenger, aktuell;
+		T resultat = null;
+		if (start.getElement().equals(element)) {// Sletter foran
+			resultat = start.getElement();
+			start = start.getNeste();
+			antall--;
+		} else {// Gjennomgår den kjedete strukturen
+			forgjenger = start;
+			aktuell = start.getNeste();
+			for (int sok = 2; sok <= antall && !funnet; sok++) {
+				if (aktuell.getElement().equals(element))
+					funnet = true;
+				else {
+					forgjenger = aktuell.getNeste();
+				}
+			}
+			if (funnet) {
+				resultat = aktuell.getElement();
+				forgjenger.setNeste(aktuell.getNeste()); // Slette midt inni/bak
+				antall--;
+			}
+		}
+		return resultat;
+
+	}//
+
+	@Override
+	public boolean inneholder(T element) {
+		boolean funnet = false;
+		LinearNode<T> aktuell = start;
+		for (int soek = 0; soek < antall && !funnet; soek++) {
+			if (aktuell.getElement().equals(element)) {
+				funnet = true;
+			} else {
+				aktuell = aktuell.getNeste();
+			}
+		}
+		return funnet;
+	}
+	/*
+	 * Når vi overkjører (ovverride) equals- meteoden er det anbefalt at vi også
+	 * overkjører hashcode-metoden da en del biblioteker bruker hascode sammen med
+	 * equals. Vi kommer tilbake til forklaring og bruk av hashcode senere i faget.
+	 */
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + antall;
+		result = prime * result + ((start == null) ? 0 : start.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object ny) {
+		
+		if (this == ny) {
+			return true;
+		}
+		if (ny == null) {
+			return false;
+		}
+		if (getClass() != ny.getClass()) {
+			return false;
+		} 
+			boolean likeMengder = true;
+			
+			MengdeADT<T>m2 = (KjedetMengde<T>)ny;
+			if (this.antall!=m2.antall()) {
+				likeMengder = false;
+			} else {
+				Iterator<T> teller = m2.oppramser();
+			
+			while(teller.hasNext()&&likeMengder) {
+				T element = teller.next();
+				if(!this.inneholder(element))
+					likeMengder = false;
+			}
+			
+	}
+			return likeMengder;		
+	}
+
+	@Override
+	public boolean erTom() {
+		return antall == 0;
+	}
+
+	@Override
+	public int antall() {
+		return antall;
+	}
+
+	@Override
+	public MengdeADT<T> union(MengdeADT<T> m2) {
+		// TODO
+		MengdeADT<T> union = new KjedetMengde<T>();
+		LinearNode<T> aktuell = start;
+		while (aktuell!=null) {
+			((KjedetMengde<T>) union).settInn(aktuell.getElement());
+			aktuell = aktuell.getNeste();
+		}
+		Iterator<T> teller = m2.oppramser();
+		
+		while(teller.hasNext()) {
+			T element = teller.next();
+			//test på om element i m2 ikke fins i m1(this)
+			//m1 er den samme hele tiden
+			if (!inneholder(element))
+				((KjedetMengde<T>un))
+		}
+
+		return union;
+	}//
+
+	@Override
+	public MengdeADT<T> snitt(MengdeADT<T> m2) {
+		// TODO
+		MengdeADT<T> snittM = new KjedetMengde<T>();
+		T element;
+		/*
+		 * ..
+		 * 
+		 * if (this.inneholder(element)) ((KjedetMengde<T>) snittM).settInn(element);
+		 */
+		return snittM;
+	}
+
+	@Override
+	public MengdeADT<T> differens(MengdeADT<T> m2) {
+		// TODO
+		MengdeADT<T> differensM = new KjedetMengde<T>();
+		T element;
+		/*
+		 * Fyll ut
+		 * 
+		 */
+
+		return differensM;
+	}
+
+	@Override
+	public boolean undermengde(MengdeADT<T> m2) {
+		// TODO
+		boolean erUnderMengde = true;
+		// ...
+		return erUnderMengde;
+	}
+
+	@Override
+	public Iterator<T> oppramser() {
+		return new KjedetIterator<T>(start);
+	}
+
+	private void settInn(T element) {
+		LinearNode<T> nyNode = new LinearNode<T>(element);
+		nyNode.setNeste(start);
+		start = nyNode;
+		antall++;
+	}
+
+}// class
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3448)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3046)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:187)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 2 2022-02-11 20:37:24.323
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.core.manipulation".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3448)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3046)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:187)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 0 2022-02-11 20:37:24.325
+!MESSAGE Error in JDT Core during AST creation
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3448)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3046)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:187)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-11 20:37:25.823
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package no.hvl.dat102.mengde.kjedet;
+
+//********************************************************************
+// Kjedet implementasjon av en mengde. 
+//********************************************************************
+import java.util.Iterator;
+import java.util.Random;
+
+import no.hvl.dat102.exception.EmptyCollectionException;
+import no.hvl.dat102.mengde.adt.MengdeADT;
+
+public class KjedetMengde<T> implements MengdeADT<T> {
+	private static Random rand = new Random();
+	private int antall; // antall elementer i mengden
+	private LinearNode<T> start;
+
+	/**
+	 * Oppretter en tom mengde.
+	 */
+	public KjedetMengde() {
+		antall = 0;
+		start = null;
+	}//
+
+	@Override
+	public void leggTil(T element) {
+		if (!(inneholder(element))) {
+			LinearNode<T> node = new LinearNode<T>(element);
+			node.setNeste(start);
+			start = node;
+			antall++;
+		}
+	}
+
+	@Override
+	public void leggTilAlle(MengdeADT<T> m2) {
+		Iterator<T> teller = m2.oppramser();
+		while (teller.hasNext()) {
+			leggTil(teller.next());
+		}
+	}
+
+	@Override
+	public T fjernTilfeldig() {
+		if (erTom())
+			throw new EmptyCollectionException("mengde");
+
+		LinearNode<T> forgjenger, aktuell;
+		T resultat = null;
+
+		int valg = rand.nextInt(antall) + 1;
+		if (valg == 1) {
+			resultat = start.getElement();
+			start = start.getNeste();
+		} else {
+			forgjenger = start;
+			for (int nr = 2; nr < valg; nr++) {
+				forgjenger = forgjenger.getNeste();
+			}
+			aktuell = forgjenger.getNeste();
+			resultat = aktuell.getElement();
+			forgjenger.setNeste(aktuell.getNeste());
+		}
+		antall--;
+
+		return resultat;
+
+	}//
+
+	@Override
+	public T fjern(T element) {
+
+		if (erTom())
+			throw new EmptyCollectionException("mengde");
+
+		boolean funnet = false;
+		LinearNode<T> forgjenger, aktuell;
+		T resultat = null;
+		if (start.getElement().equals(element)) {// Sletter foran
+			resultat = start.getElement();
+			start = start.getNeste();
+			antall--;
+		} else {// Gjennomgår den kjedete strukturen
+			forgjenger = start;
+			aktuell = start.getNeste();
+			for (int sok = 2; sok <= antall && !funnet; sok++) {
+				if (aktuell.getElement().equals(element))
+					funnet = true;
+				else {
+					forgjenger = aktuell.getNeste();
+				}
+			}
+			if (funnet) {
+				resultat = aktuell.getElement();
+				forgjenger.setNeste(aktuell.getNeste()); // Slette midt inni/bak
+				antall--;
+			}
+		}
+		return resultat;
+
+	}//
+
+	@Override
+	public boolean inneholder(T element) {
+		boolean funnet = false;
+		LinearNode<T> aktuell = start;
+		for (int soek = 0; soek < antall && !funnet; soek++) {
+			if (aktuell.getElement().equals(element)) {
+				funnet = true;
+			} else {
+				aktuell = aktuell.getNeste();
+			}
+		}
+		return funnet;
+	}
+	/*
+	 * Når vi overkjører (ovverride) equals- meteoden er det anbefalt at vi også
+	 * overkjører hashcode-metoden da en del biblioteker bruker hascode sammen med
+	 * equals. Vi kommer tilbake til forklaring og bruk av hashcode senere i faget.
+	 */
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + antall;
+		result = prime * result + ((start == null) ? 0 : start.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object ny) {
+		
+		if (this == ny) {
+			return true;
+		}
+		if (ny == null) {
+			return false;
+		}
+		if (getClass() != ny.getClass()) {
+			return false;
+		} 
+			boolean likeMengder = true;
+			
+			MengdeADT<T>m2 = (KjedetMengde<T>)ny;
+			if (this.antall!=m2.antall()) {
+				likeMengder = false;
+			} else {
+				Iterator<T> teller = m2.oppramser();
+			
+			while(teller.hasNext()&&likeMengder) {
+				T element = teller.next();
+				if(!this.inneholder(element))
+					likeMengder = false;
+			}
+			
+	}
+			return likeMengder;		
+	}
+
+	@Override
+	public boolean erTom() {
+		return antall == 0;
+	}
+
+	@Override
+	public int antall() {
+		return antall;
+	}
+
+	@Override
+	public MengdeADT<T> union(MengdeADT<T> m2) {
+		// TODO
+		MengdeADT<T> union = new KjedetMengde<T>();
+		LinearNode<T> aktuell = start;
+		while (aktuell!=null) {
+			((KjedetMengde<T>) union).settInn(aktuell.getElement());
+			aktuell = aktuell.getNeste();
+		}
+		Iterator<T> teller = m2.oppramser();
+		
+		while(teller.hasNext()) {
+			T element = teller.next();
+			//test på om element i m2 ikke fins i m1(this)
+			//m1 er den samme hele tiden
+			if (!inneholder(element))
+				((KjedetMengde<T>union))
+		}
+
+		return union;
+	}//
+
+	@Override
+	public MengdeADT<T> snitt(MengdeADT<T> m2) {
+		// TODO
+		MengdeADT<T> snittM = new KjedetMengde<T>();
+		T element;
+		/*
+		 * ..
+		 * 
+		 * if (this.inneholder(element)) ((KjedetMengde<T>) snittM).settInn(element);
+		 */
+		return snittM;
+	}
+
+	@Override
+	public MengdeADT<T> differens(MengdeADT<T> m2) {
+		// TODO
+		MengdeADT<T> differensM = new KjedetMengde<T>();
+		T element;
+		/*
+		 * Fyll ut
+		 * 
+		 */
+
+		return differensM;
+	}
+
+	@Override
+	public boolean undermengde(MengdeADT<T> m2) {
+		// TODO
+		boolean erUnderMengde = true;
+		// ...
+		return erUnderMengde;
+	}
+
+	@Override
+	public Iterator<T> oppramser() {
+		return new KjedetIterator<T>(start);
+	}
+
+	private void settInn(T element) {
+		LinearNode<T> nyNode = new LinearNode<T>(element);
+		nyNode.setNeste(start);
+		start = nyNode;
+		antall++;
+	}
+
+}// class
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3448)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3046)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:501)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:201)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:266)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:597)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1142)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:740)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:806)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1319)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.ui 4 2 2022-02-11 20:37:25.824
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.ui".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3448)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3046)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:501)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:201)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:266)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:597)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1142)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:740)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:806)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1319)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.ui 4 0 2022-02-11 20:37:25.825
+!MESSAGE Error in JDT Core during reconcile
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3448)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3046)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.AST.convertCompilationUnit(AST.java:501)
+	at org.eclipse.jdt.internal.core.CompilationUnit.buildStructure(CompilationUnit.java:201)
+	at org.eclipse.jdt.internal.core.Openable.generateInfos(Openable.java:266)
+	at org.eclipse.jdt.internal.core.JavaElement.openWhenClosed(JavaElement.java:597)
+	at org.eclipse.jdt.internal.core.CompilationUnit.makeConsistent(CompilationUnit.java:1142)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.makeConsistent(ReconcileWorkingCopyOperation.java:173)
+	at org.eclipse.jdt.internal.core.ReconcileWorkingCopyOperation.executeOperation(ReconcileWorkingCopyOperation.java:94)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.run(JavaModelOperation.java:740)
+	at org.eclipse.jdt.internal.core.JavaModelOperation.runOperation(JavaModelOperation.java:806)
+	at org.eclipse.jdt.internal.core.CompilationUnit.reconcile(CompilationUnit.java:1319)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:131)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy$1.run(JavaReconcilingStrategy.java:93)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:90)
+	at org.eclipse.jdt.internal.ui.text.java.JavaReconcilingStrategy.reconcile(JavaReconcilingStrategy.java:157)
+	at org.eclipse.jdt.internal.ui.text.CompositeReconcilingStrategy.reconcile(CompositeReconcilingStrategy.java:94)
+	at org.eclipse.jdt.internal.ui.text.JavaCompositeReconcilingStrategy.reconcile(JavaCompositeReconcilingStrategy.java:107)
+	at org.eclipse.jface.text.reconciler.MonoReconciler.process(MonoReconciler.java:76)
+	at org.eclipse.jface.text.reconciler.AbstractReconciler$BackgroundThread.run(AbstractReconciler.java:210)
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-11 20:37:26.039
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package no.hvl.dat102.mengde.kjedet;
+
+//********************************************************************
+// Kjedet implementasjon av en mengde. 
+//********************************************************************
+import java.util.Iterator;
+import java.util.Random;
+
+import no.hvl.dat102.exception.EmptyCollectionException;
+import no.hvl.dat102.mengde.adt.MengdeADT;
+
+public class KjedetMengde<T> implements MengdeADT<T> {
+	private static Random rand = new Random();
+	private int antall; // antall elementer i mengden
+	private LinearNode<T> start;
+
+	/**
+	 * Oppretter en tom mengde.
+	 */
+	public KjedetMengde() {
+		antall = 0;
+		start = null;
+	}//
+
+	@Override
+	public void leggTil(T element) {
+		if (!(inneholder(element))) {
+			LinearNode<T> node = new LinearNode<T>(element);
+			node.setNeste(start);
+			start = node;
+			antall++;
+		}
+	}
+
+	@Override
+	public void leggTilAlle(MengdeADT<T> m2) {
+		Iterator<T> teller = m2.oppramser();
+		while (teller.hasNext()) {
+			leggTil(teller.next());
+		}
+	}
+
+	@Override
+	public T fjernTilfeldig() {
+		if (erTom())
+			throw new EmptyCollectionException("mengde");
+
+		LinearNode<T> forgjenger, aktuell;
+		T resultat = null;
+
+		int valg = rand.nextInt(antall) + 1;
+		if (valg == 1) {
+			resultat = start.getElement();
+			start = start.getNeste();
+		} else {
+			forgjenger = start;
+			for (int nr = 2; nr < valg; nr++) {
+				forgjenger = forgjenger.getNeste();
+			}
+			aktuell = forgjenger.getNeste();
+			resultat = aktuell.getElement();
+			forgjenger.setNeste(aktuell.getNeste());
+		}
+		antall--;
+
+		return resultat;
+
+	}//
+
+	@Override
+	public T fjern(T element) {
+
+		if (erTom())
+			throw new EmptyCollectionException("mengde");
+
+		boolean funnet = false;
+		LinearNode<T> forgjenger, aktuell;
+		T resultat = null;
+		if (start.getElement().equals(element)) {// Sletter foran
+			resultat = start.getElement();
+			start = start.getNeste();
+			antall--;
+		} else {// Gjennomgår den kjedete strukturen
+			forgjenger = start;
+			aktuell = start.getNeste();
+			for (int sok = 2; sok <= antall && !funnet; sok++) {
+				if (aktuell.getElement().equals(element))
+					funnet = true;
+				else {
+					forgjenger = aktuell.getNeste();
+				}
+			}
+			if (funnet) {
+				resultat = aktuell.getElement();
+				forgjenger.setNeste(aktuell.getNeste()); // Slette midt inni/bak
+				antall--;
+			}
+		}
+		return resultat;
+
+	}//
+
+	@Override
+	public boolean inneholder(T element) {
+		boolean funnet = false;
+		LinearNode<T> aktuell = start;
+		for (int soek = 0; soek < antall && !funnet; soek++) {
+			if (aktuell.getElement().equals(element)) {
+				funnet = true;
+			} else {
+				aktuell = aktuell.getNeste();
+			}
+		}
+		return funnet;
+	}
+	/*
+	 * Når vi overkjører (ovverride) equals- meteoden er det anbefalt at vi også
+	 * overkjører hashcode-metoden da en del biblioteker bruker hascode sammen med
+	 * equals. Vi kommer tilbake til forklaring og bruk av hashcode senere i faget.
+	 */
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + antall;
+		result = prime * result + ((start == null) ? 0 : start.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object ny) {
+		
+		if (this == ny) {
+			return true;
+		}
+		if (ny == null) {
+			return false;
+		}
+		if (getClass() != ny.getClass()) {
+			return false;
+		} 
+			boolean likeMengder = true;
+			
+			MengdeADT<T>m2 = (KjedetMengde<T>)ny;
+			if (this.antall!=m2.antall()) {
+				likeMengder = false;
+			} else {
+				Iterator<T> teller = m2.oppramser();
+			
+			while(teller.hasNext()&&likeMengder) {
+				T element = teller.next();
+				if(!this.inneholder(element))
+					likeMengder = false;
+			}
+			
+	}
+			return likeMengder;		
+	}
+
+	@Override
+	public boolean erTom() {
+		return antall == 0;
+	}
+
+	@Override
+	public int antall() {
+		return antall;
+	}
+
+	@Override
+	public MengdeADT<T> union(MengdeADT<T> m2) {
+		// TODO
+		MengdeADT<T> union = new KjedetMengde<T>();
+		LinearNode<T> aktuell = start;
+		while (aktuell!=null) {
+			((KjedetMengde<T>) union).settInn(aktuell.getElement());
+			aktuell = aktuell.getNeste();
+		}
+		Iterator<T> teller = m2.oppramser();
+		
+		while(teller.hasNext()) {
+			T element = teller.next();
+			//test på om element i m2 ikke fins i m1(this)
+			//m1 er den samme hele tiden
+			if (!inneholder(element))
+				((KjedetMengde<T>union))
+		}
+
+		return union;
+	}//
+
+	@Override
+	public MengdeADT<T> snitt(MengdeADT<T> m2) {
+		// TODO
+		MengdeADT<T> snittM = new KjedetMengde<T>();
+		T element;
+		/*
+		 * ..
+		 * 
+		 * if (this.inneholder(element)) ((KjedetMengde<T>) snittM).settInn(element);
+		 */
+		return snittM;
+	}
+
+	@Override
+	public MengdeADT<T> differens(MengdeADT<T> m2) {
+		// TODO
+		MengdeADT<T> differensM = new KjedetMengde<T>();
+		T element;
+		/*
+		 * Fyll ut
+		 * 
+		 */
+
+		return differensM;
+	}
+
+	@Override
+	public boolean undermengde(MengdeADT<T> m2) {
+		// TODO
+		boolean erUnderMengde = true;
+		// ...
+		return erUnderMengde;
+	}
+
+	@Override
+	public Iterator<T> oppramser() {
+		return new KjedetIterator<T>(start);
+	}
+
+	private void settInn(T element) {
+		LinearNode<T> nyNode = new LinearNode<T>(element);
+		nyNode.setNeste(start);
+		start = nyNode;
+		antall++;
+	}
+
+}// class
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3448)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3046)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 2 2022-02-11 20:37:26.041
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.core.manipulation".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3448)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3046)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 0 2022-02-11 20:37:26.041
+!MESSAGE Error in JDT Core during AST creation
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3448)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3046)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core 4 4 2022-02-11 20:37:34.911
+!MESSAGE Exception occurred during compilation unit conversion:
+----------------------------------- SOURCE BEGIN -------------------------------------
+package no.hvl.dat102.mengde.kjedet;
+
+//********************************************************************
+// Kjedet implementasjon av en mengde. 
+//********************************************************************
+import java.util.Iterator;
+import java.util.Random;
+
+import no.hvl.dat102.exception.EmptyCollectionException;
+import no.hvl.dat102.mengde.adt.MengdeADT;
+
+public class KjedetMengde<T> implements MengdeADT<T> {
+	private static Random rand = new Random();
+	private int antall; // antall elementer i mengden
+	private LinearNode<T> start;
+
+	/**
+	 * Oppretter en tom mengde.
+	 */
+	public KjedetMengde() {
+		antall = 0;
+		start = null;
+	}//
+
+	@Override
+	public void leggTil(T element) {
+		if (!(inneholder(element))) {
+			LinearNode<T> node = new LinearNode<T>(element);
+			node.setNeste(start);
+			start = node;
+			antall++;
+		}
+	}
+
+	@Override
+	public void leggTilAlle(MengdeADT<T> m2) {
+		Iterator<T> teller = m2.oppramser();
+		while (teller.hasNext()) {
+			leggTil(teller.next());
+		}
+	}
+
+	@Override
+	public T fjernTilfeldig() {
+		if (erTom())
+			throw new EmptyCollectionException("mengde");
+
+		LinearNode<T> forgjenger, aktuell;
+		T resultat = null;
+
+		int valg = rand.nextInt(antall) + 1;
+		if (valg == 1) {
+			resultat = start.getElement();
+			start = start.getNeste();
+		} else {
+			forgjenger = start;
+			for (int nr = 2; nr < valg; nr++) {
+				forgjenger = forgjenger.getNeste();
+			}
+			aktuell = forgjenger.getNeste();
+			resultat = aktuell.getElement();
+			forgjenger.setNeste(aktuell.getNeste());
+		}
+		antall--;
+
+		return resultat;
+
+	}//
+
+	@Override
+	public T fjern(T element) {
+
+		if (erTom())
+			throw new EmptyCollectionException("mengde");
+
+		boolean funnet = false;
+		LinearNode<T> forgjenger, aktuell;
+		T resultat = null;
+		if (start.getElement().equals(element)) {// Sletter foran
+			resultat = start.getElement();
+			start = start.getNeste();
+			antall--;
+		} else {// Gjennomgår den kjedete strukturen
+			forgjenger = start;
+			aktuell = start.getNeste();
+			for (int sok = 2; sok <= antall && !funnet; sok++) {
+				if (aktuell.getElement().equals(element))
+					funnet = true;
+				else {
+					forgjenger = aktuell.getNeste();
+				}
+			}
+			if (funnet) {
+				resultat = aktuell.getElement();
+				forgjenger.setNeste(aktuell.getNeste()); // Slette midt inni/bak
+				antall--;
+			}
+		}
+		return resultat;
+
+	}//
+
+	@Override
+	public boolean inneholder(T element) {
+		boolean funnet = false;
+		LinearNode<T> aktuell = start;
+		for (int soek = 0; soek < antall && !funnet; soek++) {
+			if (aktuell.getElement().equals(element)) {
+				funnet = true;
+			} else {
+				aktuell = aktuell.getNeste();
+			}
+		}
+		return funnet;
+	}
+	/*
+	 * Når vi overkjører (ovverride) equals- meteoden er det anbefalt at vi også
+	 * overkjører hashcode-metoden da en del biblioteker bruker hascode sammen med
+	 * equals. Vi kommer tilbake til forklaring og bruk av hashcode senere i faget.
+	 */
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + antall;
+		result = prime * result + ((start == null) ? 0 : start.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object ny) {
+		
+		if (this == ny) {
+			return true;
+		}
+		if (ny == null) {
+			return false;
+		}
+		if (getClass() != ny.getClass()) {
+			return false;
+		} 
+			boolean likeMengder = true;
+			
+			MengdeADT<T>m2 = (KjedetMengde<T>)ny;
+			if (this.antall!=m2.antall()) {
+				likeMengder = false;
+			} else {
+				Iterator<T> teller = m2.oppramser();
+			
+			while(teller.hasNext()&&likeMengder) {
+				T element = teller.next();
+				if(!this.inneholder(element))
+					likeMengder = false;
+			}
+			
+	}
+			return likeMengder;		
+	}
+
+	@Override
+	public boolean erTom() {
+		return antall == 0;
+	}
+
+	@Override
+	public int antall() {
+		return antall;
+	}
+
+	@Override
+	public MengdeADT<T> union(MengdeADT<T> m2) {
+		// TODO
+		MengdeADT<T> union = new KjedetMengde<T>();
+		LinearNode<T> aktuell = start;
+		while (aktuell!=null) {
+			((KjedetMengde<T>) union).settInn(aktuell.getElement());
+			aktuell = aktuell.getNeste();
+		}
+		Iterator<T> teller = m2.oppramser();
+		
+		while(teller.hasNext()) {
+			T element = teller.next();
+			//test på om element i m2 ikke fins i m1(this)
+			//m1 er den samme hele tiden
+			if (!inneholder(element))
+				((KjedetMengde<T>union))
+		}
+
+		return union;
+	}//
+
+	@Override
+	public MengdeADT<T> snitt(MengdeADT<T> m2) {
+		// TODO
+		MengdeADT<T> snittM = new KjedetMengde<T>();
+		T element;
+		/*
+		 * ..
+		 * 
+		 * if (this.inneholder(element)) ((KjedetMengde<T>) snittM).settInn(element);
+		 */
+		return snittM;
+	}
+
+	@Override
+	public MengdeADT<T> differens(MengdeADT<T> m2) {
+		// TODO
+		MengdeADT<T> differensM = new KjedetMengde<T>();
+		T element;
+		/*
+		 * Fyll ut
+		 * 
+		 */
+
+		return differensM;
+	}
+
+	@Override
+	public boolean undermengde(MengdeADT<T> m2) {
+		// TODO
+		boolean erUnderMengde = true;
+		// ...
+		return erUnderMengde;
+	}
+
+	@Override
+	public Iterator<T> oppramser() {
+		return new KjedetIterator<T>(start);
+	}
+
+	private void settInn(T element) {
+		LinearNode<T> nyNode = new LinearNode<T>(element);
+		nyNode.setNeste(start);
+		start = nyNode;
+		antall++;
+	}
+
+}// class
+
+----------------------------------- SOURCE END -------------------------------------
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3448)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3046)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 2 2022-02-11 20:37:34.911
+!MESSAGE Problems occurred when invoking code from plug-in: "org.eclipse.jdt.core.manipulation".
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3448)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3046)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.jdt.core.manipulation 4 0 2022-02-11 20:37:34.912
+!MESSAGE Error in JDT Core during AST creation
+!STACK 0
+java.lang.IllegalArgumentException
+	at org.eclipse.jdt.core.dom.InfixExpression.setOperator(InfixExpression.java:383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1287)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2033)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convertToParenthesizedExpression(ASTConverter.java:3797)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1945)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1204)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1976)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3054)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2216)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2996)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1383)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:2972)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3448)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3046)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:751)
+	at org.eclipse.jdt.core.dom.ASTConverter.buildBodyDeclarations(ASTConverter.java:208)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:3349)
+	at org.eclipse.jdt.core.dom.ASTConverter.convert(ASTConverter.java:1526)
+	at org.eclipse.jdt.core.dom.CompilationUnitResolver.convert(CompilationUnitResolver.java:323)
+	at org.eclipse.jdt.core.dom.ASTParser.internalCreateAST(ASTParser.java:1279)
+	at org.eclipse.jdt.core.dom.ASTParser.createAST(ASTParser.java:868)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider$1.run(CoreASTProvider.java:272)
+	at org.eclipse.core.runtime.SafeRunner.run(SafeRunner.java:45)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.createAST(CoreASTProvider.java:264)
+	at org.eclipse.jdt.core.manipulation.CoreASTProvider.getAST(CoreASTProvider.java:197)
+	at org.eclipse.jdt.core.manipulation.SharedASTProviderCore.getAST(SharedASTProviderCore.java:138)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup.calculateASTandInform(SelectionListenerWithASTManager.java:166)
+	at org.eclipse.jdt.internal.ui.viewsupport.SelectionListenerWithASTManager$PartListenerGroup$1.run(SelectionListenerWithASTManager.java:151)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SESSION 2022-02-11 22:01:20.193 -----------------------------------------------
+eclipse.buildId=4.21.0.I20210906-0500
+java.version=17.0.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=no_NO
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.java.product
+
+!ENTRY org.eclipse.oomph.p2.core 2 0 2022-02-11 22:01:39.204
+!MESSAGE Failed to register the thread safe credentials providers: 'java.util.Map org.eclipse.core.internal.runtime.AdapterManager.getFactories()'
+
+!ENTRY org.eclipse.jface 2 0 2022-02-11 22:01:41.030
+!MESSAGE Keybinding conflicts occurred.  They may interfere with normal accelerator operation.
+!SUBENTRY 1 org.eclipse.jface 2 0 2022-02-11 22:01:41.031
+!MESSAGE A conflict occurred for CTRL+SHIFT+T:
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.navigate.open.type,Open Type,
+		Open a type in a Java editor,
+		Category(org.eclipse.ui.category.navigate,Navigate,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@41ddec69,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(CTRL+SHIFT+T,
+	ParameterizedCommand(Command(org.eclipse.lsp4e.symbolinworkspace,Go to Symbol in Workspace,
+		,
+		Category(org.eclipse.lsp4e.category,Language Servers,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@5e3cb58e,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+!SUBENTRY 1 org.eclipse.jface 2 0 2022-02-11 22:01:41.031
+!MESSAGE A conflict occurred for ALT+SHIFT+R:
+Binding(ALT+SHIFT+R,
+	ParameterizedCommand(Command(org.eclipse.jdt.ui.edit.text.java.rename.element,Rename - Refactoring ,
+		Rename the selected element,
+		Category(org.eclipse.jdt.ui.category.refactoring,Refactor - Java,Java Refactoring Actions,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@18f8e2e0,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+Binding(ALT+SHIFT+R,
+	ParameterizedCommand(Command(org.eclipse.ui.edit.rename,Rename,
+		Rename the selected item,
+		Category(org.eclipse.ui.category.file,File,null,true),
+		org.eclipse.ui.internal.WorkbenchHandlerServiceHandler@28d56028,
+		,,true),null),
+	org.eclipse.ui.defaultAcceleratorConfiguration,
+	org.eclipse.ui.contexts.window,,,system)
+
+!ENTRY org.eclipse.egit.ui 2 0 2022-02-11 22:01:45.353
+!MESSAGE Warning: The environment variable HOME is not set. The following directory will be used to store the Git
+user global configuration and to define the default location to store repositories: 'C:\Users\jonas'. If this is
+not correct please set the HOME environment variable and restart Eclipse. Otherwise Git for Windows and
+EGit might behave differently since they see different configuration options.
+This warning can be switched off on the Team > Git > Confirmations and Warnings preference page.

@@ -1,0 +1,5 @@
+INDEX VERSION 1.131+C:\Users\jonas\Desktop\Skule\Dat_102\Workspaces\Lab\Hashing og Dictonary\.metadata\.plugins\org.eclipse.jdt.core
+2613833171.index
+3923088715.index
+4238989711.index
+1865797976.index

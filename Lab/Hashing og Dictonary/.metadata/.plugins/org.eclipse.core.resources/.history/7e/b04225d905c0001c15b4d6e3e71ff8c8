@@ -1,0 +1,123 @@
+package no.hvl.dat102;
+
+import java.util.Iterator;
+
+import ADT.DictonaryADT;
+
+public class SortedLinkedDictonary <K extends Comparable<? super K>, V> implements DictonaryADT<K,V> {
+
+	private Node<Entry<K,V>> firstNode;
+	private int numberOfEntries;
+	
+	public SortedLinkedDictonary() {
+		firstNode = null;
+		numberOfEntries = 0;
+	}
+	
+	@Override
+	public void add(K key, V value) {
+		
+	
+		
+		//Search chain until you either find a node containing key
+		//or locate where it should be
+		
+		Node<Entry<K,V>> currentNode = firstNode;
+		Node<Entry<K,V>> forrige = null;
+		while ((currentNode!=null)&&key.compareTo(currentNode.getElement().getKey())>0) {
+			forrige = currentNode;
+			currentNode = currentNode.getNext();
+		}
+		
+		if ((currentNode != null)&&key.equals(currentNode.getElement().getKey())) {
+
+			currentNode.getElement().setValue(value);
+		}
+		else {
+			Entry<K,V> newEntry = new Entry<K,V>(key,value);
+			Node<Entry<K,V>> newNode = new Node<Entry<K,V>>(newEntry);
+			if (forrige == null) {
+				newNode.setNext(firstNode);
+				firstNode = newNode;
+			}
+			else {
+				newNode.setNext(currentNode);
+				forrige.setNext(newNode);
+			}
+		
+			numberOfEntries++;
+		}
+		
+		
+		
+	}
+
+	@Override
+	public V remove(K key) {
+		
+		if (firstNode.getElement().getKey().equals(key)) {
+			firstNode = firstNode.getNext();
+			numberOfEntries--;
+			return firstNode.getElement().getValue();
+		} else {
+			if (containsKey(key)) {
+				
+			Node<Entry<K,V>> temp = firstNode;
+			Node<Entry<K,V>> forrige = null;
+			boolean funnet = false;
+			int i = 0;
+			while(i<numberOfEntries && !funnet) {
+				
+			}
+				
+			} else {
+				return null;
+			}
+		}
+		
+		
+	}
+
+	@Override
+	public V getValue(K key) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean containsKey(K key) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Iterator<K> getKeyIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iterator<V> getValueIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int getSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}

@@ -1,0 +1,30 @@
+package no.hvl.dat100;
+
+import java.util.HashSet;
+import java.util.Set;
+
+public class Main {
+	
+	public static void main(String[] args) {
+		Set<String> set1 = new HashSet<>();
+		Set<String> set2 = new HashSet<>();
+		
+		set1.add("Hei");
+		set1.add("Hei");
+		set1.add("Jonas");
+		set1.add("Even");
+		set1.add("Lol");
+		
+		set2.add("Hei");
+		set2.add("Hallo");
+		set2.add("Hallo");
+		set2.add("Hade");
+		set2.add("Bra");
+		
+		
+		for (String i : set1) {
+			System.out.println(i);
+		}
+	}
+
+}

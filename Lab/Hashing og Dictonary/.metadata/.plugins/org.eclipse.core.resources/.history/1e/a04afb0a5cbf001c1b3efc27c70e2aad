@@ -1,0 +1,13 @@
+package no.hvl.dat102;
+
+import java.util.jar.Attributes.Name;
+
+import ADT.DictonaryADT;
+
+public class Dictonary {
+	
+	private DictonaryADT<Name, String> phonebook;
+	
+	
+
+}

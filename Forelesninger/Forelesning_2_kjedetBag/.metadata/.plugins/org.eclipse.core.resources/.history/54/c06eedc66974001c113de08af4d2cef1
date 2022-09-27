@@ -1,0 +1,15 @@
+package no.hvl.dat100;
+
+public class BagTesting {
+	
+	public static void main(String[] args) {
+		KjedetBag bag = new KjedetBag();
+		bag.leggTil("Kari");
+		bag.leggTil("Jonas");
+		bag.leggTil("Even");
+		bag.fjern("Jonas");
+		System.out.println(bag);
+		
+	}
+
+}

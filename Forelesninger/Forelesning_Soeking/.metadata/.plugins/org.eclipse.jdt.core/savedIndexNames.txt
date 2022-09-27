@@ -1,0 +1,4 @@
+INDEX VERSION 1.131+C:\Users\jonas\Desktop\Skule\Dat_102\Workspaces\Forelesninger\Forelesning_Soeking\.metadata\.plugins\org.eclipse.jdt.core
+1584381191.index
+1865797976.index
+3923088715.index

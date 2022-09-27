@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="java.util.jar.Attributes.Name"/>
+    <fullyQualifiedTypeName name="no.hvl.dat102.Node"/>
+    <fullyQualifiedTypeName name="no.hvl.dat102.Entry"/>
+    <fullyQualifiedTypeName name="java.util.NoSuchElementException"/>
+    <fullyQualifiedTypeName name="ADT.DictonaryADT"/>
+    <fullyQualifiedTypeName name="Iterators.linkedKeyIterator"/>
+    <fullyQualifiedTypeName name="Iterators.linkedValueIterator"/>
+    <fullyQualifiedTypeName name="hjelpeklasser.Entry"/>
+    <fullyQualifiedTypeName name="hjelpeklasser.TableEntry"/>
+    <fullyQualifiedTypeName name="java.util.Iterator"/>
+    <fullyQualifiedTypeName name="Iterators.KeyIterator"/>
+</qualifiedTypeNameHistroy>

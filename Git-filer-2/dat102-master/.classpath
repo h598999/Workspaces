@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-12"/>
+	<classpathentry kind="src" path="BalanseringU/src"/>
+	<classpathentry kind="src" path="BSTre/src"/>
+	<classpathentry kind="src" path="BSTre/test"/>
+	<classpathentry kind="src" path="DobbelKjedetOrdnetListeMidtPekerFyllUt/src"/>
+	<classpathentry kind="src" path="EnumArbeidsdag/src"/>
+	<classpathentry kind="src" path="EnumSjanger/src"/>
+	<classpathentry kind="src" path="Generisk/src"/>
+	<classpathentry kind="src" path="HaugU/src"/>
+	<classpathentry kind="src" path="Kalkulator/src"/>
+	<classpathentry kind="src" path="Kalkulator/Test"/>
+	<classpathentry kind="src" path="Karakter/src"/>
+	<classpathentry kind="src" path="Karakter/Test"/>
+	<classpathentry kind="src" path="KjedetStabelMedUnntak/src"/>
+	<classpathentry kind="src" path="KjedetStabelMedUnntak/TestStabel"/>
+	<classpathentry kind="src" path="LabyrintMedRekursjon/src"/>
+	<classpathentry kind="src" path="LabyrintUtenRekursjon/src"/>
+	<classpathentry kind="src" path="ListeOrdnetU/src"/>
+	<classpathentry kind="src" path="ListeOrdnetU/TestOrdnetListe"/>
+	<classpathentry kind="src" path="MengdeU/src"/>
+	<classpathentry kind="src" path="SimuleringU/src"/>
+	<classpathentry kind="src" path="SorteringOgSoekingFyllUt/src"/>
+	<classpathentry kind="src" path="SorteringOgSoekingFyllUt/TestSortering"/>
+	<classpathentry kind="src" path="Stabel/src"/>
+	<classpathentry kind="src" path="Stabel/Test"/>
+	<classpathentry kind="src" path="TabellStabelMedUnntak/src"/>
+	<classpathentry kind="src" path="TabellStabelMedUnntak/TestStabel"/>
+	<classpathentry kind="src" path="TabellStabelUtenUnntak/src"/>
+	<classpathentry kind="src" path="TabellStabelUtenUnntak/TestStabel"/>
+	<classpathentry kind="src" path="TekstFil/src"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

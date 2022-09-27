@@ -1,0 +1,40 @@
+import java.util.Random;
+
+public class Tester {
+	
+	public static void main(String[] args) {
+		
+		
+		Integer[] tab2 = tab1;
+		Integer[] tab3 = tab1;
+		Integer[] tab4 = tab1;
+		Sorter.IterativeSelectionSort(tab1);
+		System.out.println(Sorter.erSortert(tab1));
+		System.out.println();
+		Sorter.SelectionSortRek(tab2);
+		System.out.println(Sorter.erSortert(tab2));
+		System.out.println();
+		Sorter.IterativeInsertionSort(tab3);
+		System.out.println(Sorter.erSortert(tab3));
+		
+		System.out.println();
+		Sorter.IterativeInsertionSort(tab3);
+		System.out.println(Sorter.erSortert(tab3));
+		
+		System.out.println();
+		Sorter.recInsertionSort(tab4);
+		System.out.println(Sorter.erSortert(tab4));
+		
+		
+	}
+	
+	public void stokk(Integer[] a, int lengde) {
+		a = new Integer[lengde];
+		Random ran = new Random();
+		for (int i = 0; i<lengde; i++) {
+			
+		}
+	}
+	
+
+}

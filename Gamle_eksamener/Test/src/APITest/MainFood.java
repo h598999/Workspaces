@@ -1,0 +1,33 @@
+package APITest;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+public class MainFood {
+
+	public static void main(String[] args) throws IOException {
+		String command = "curl -X GET --header 'Accept: application/json' --header 'Authorization: Token token=536f731144fa1ba705ebe3338271ba5f' 'https://www.foodrepo.org/api/v3/products/2030'";
+		Process process = Runtime.getRuntime().exec(command);
+		Token token = "536f731144fa1ba705ebe3338271ba5f";
+		HttpClient client = HttpClient.newHttpClient();
+		HttpRequest request = HttpRequest.newBuilder().uri(URI.create("https://www.foodrepo.org/api/v3/products/2030")).build();
+		client.sendAsync(request, HttpResponse.BodyHandlers.ofString()).thenApply(HttpResponse::body).thenAccept(System.out::println).join();
+		process.getInputStream();
+	}
+	
+	public static String parse(String responseBody) {
+		
+			JSONObject product = new JSONObject(responseBody);
+			int id = product.getInt("id");
+			int barcode = product.getInt("barcode");
+			System.out.println(id + " " + barcode);
+		return null;
+	}
+	
+}

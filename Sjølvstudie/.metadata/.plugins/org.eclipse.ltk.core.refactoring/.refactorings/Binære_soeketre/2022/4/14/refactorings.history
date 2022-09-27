@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename compilation unit &apos;Tre.BinaerSoekeTre.java&apos; to &apos;BinaertSoekeTre.java&apos;&#x0D;&#x0A;- Original project: &apos;Binære_soeketre&apos;&#x0D;&#x0A;- Original element: &apos;Tre.BinaerSoekeTre.java&apos;&#x0D;&#x0A;- Renamed element: &apos;Tre.BinaertSoekeTre.java&apos;" description="Rename compilation unit &apos;BinaerSoekeTre.java&apos;" flags="2" id="org.eclipse.jdt.ui.rename.compilationunit" input="/src&lt;Tre{BinaerSoekeTre.java" name="BinaertSoekeTre.java" references="false" stamp="1649113140472" version="1.0"/>
+</session>

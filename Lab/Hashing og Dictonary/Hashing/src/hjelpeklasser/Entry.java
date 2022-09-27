@@ -1,0 +1,25 @@
+package hjelpeklasser;
+
+public class Entry<S, T> {
+
+	private S key;
+	private T value;
+	
+	public Entry(S searchKey, T dataValue) {
+		key = searchKey;
+		value = dataValue;
+	}
+	
+	public S getKey() {
+		return key;
+	}
+	
+	public T getValue() {
+		return value;
+	}
+	
+	public void setValue(T newValue) {
+		value = newValue;
+	}
+	
+}

@@ -1,0 +1,5 @@
+INDEX VERSION 1.131+C:\Users\jonas\Desktop\Skule\Dat_102\Workspaces\Forelesninger\Forelesning_Rekursjon\.metadata\.plugins\org.eclipse.jdt.core
+598396451.index
+4202128720.index
+275542003.index
+1865797976.index

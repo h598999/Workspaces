@@ -1,0 +1,89 @@
+package Oppgave_5;
+
+import Ekstra.BinaerTreNode;
+
+public class KjedetBSTre<T extends Comparable<T>>  {
+	 private int antall;
+	 private BinaerTreNode<T> rot = new BinaerTreNode<T>(null);
+	 public KjedetBSTre() {
+	 antall = 0;
+	rot = null;
+	 }
+	 
+	 public KjedetBSTre(T el) {
+		 rot.setElement(el);
+		 antall = 1;
+	 }
+	 
+	 public void leggTil(T el) {
+		 leggTil(el, rot);
+	 }
+	 
+	 private void leggTil(T el, BinaerTreNode<T> foerste) {
+		
+		 if (foerste==null) {
+			 rot = new BinaerTreNode<T>(el);
+			 antall++;
+			 return;
+		 }
+		 
+		 if (foerste.getElement().compareTo(el)>0) {
+			 if (foerste.getVenstre()==null) {
+				 BinaerTreNode<T> nyNode = new BinaerTreNode<T>(el);
+				 foerste.setVenstre(nyNode);
+				 antall++;
+			 }  else {
+				 leggTil(el, foerste.getVenstre());
+			 }
+		 } else {
+			 if (foerste.getHoyre()==null) {
+				 BinaerTreNode<T> nyNode = new BinaerTreNode<T>(el);
+				 foerste.setHoyre(nyNode);
+				 antall++;
+			 } else {
+				 leggTil(el, foerste.getHoyre());
+			 }
+		 }
+	 }
+	 
+	 public String toString() {
+	 return toString(rot);
+	 }
+	 private String toString(BinaerTreNode<T> p) {
+		 String str = "\n";
+		 if (p!=null) {
+			 str += toString(p.getVenstre()) + p.getElement().toString() + toString(p.getHoyre());
+		 }
+		 return str;
+		 
+	 }
+	 public static <T extends Comparable<T>> boolean
+	 verifiserBSTre(KjedetBSTre<T> detAndre) {
+	return verifiserBSTre(detAndre.getRot()); 
+	 }
+	private static <T extends Comparable<T>> boolean verifiserBSTre(BinaerTreNode<T> p){
+		
+		
+		if (p.getHoyre()==null&&p.getVenstre()==null) {
+			return true;
+		}
+		boolean venstreTre = false;
+		boolean hoyreTre = false;
+		if (p.getVenstre()==null) {
+			venstreTre = true;
+		} else {
+			venstreTre = (p.getVenstre().getElement().compareTo(p.getElement())<0)&&verifiserBSTre(p.getVenstre());
+		}
+		if (p.getHoyre()==null) {
+			hoyreTre = true;
+		} else {
+			hoyreTre = (p.getHoyre().getElement().compareTo(p.getElement())>0)&&verifiserBSTre(p.getHoyre());
+		}
+		return venstreTre&&hoyreTre;
+		
+	}
+	public BinaerTreNode<T> getRot(){
+		return rot;
+	}
+	}
+

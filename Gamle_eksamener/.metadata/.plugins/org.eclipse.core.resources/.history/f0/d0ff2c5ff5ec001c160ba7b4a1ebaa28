@@ -1,0 +1,17 @@
+package Entiteter;
+
+import java.io.IOException;
+
+public class MainTests {
+	
+	public static void main(String[] args) throws IOException, InterruptedException {
+		
+		Kjøleskap kjøleskap = new Kjøleskap();
+		kjøleskap.leggTil(2030);
+		Vare[] varer = kjøleskap.getAlle();
+		for (int i = 0; i<varer.length; i++) {
+			System.out.println(varer[i]);
+		}
+		
+	}
+}

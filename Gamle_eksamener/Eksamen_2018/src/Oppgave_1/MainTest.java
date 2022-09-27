@@ -1,0 +1,29 @@
+package Oppgave_1;
+
+public class MainTest {
+	
+	public static void main(String[] args) {
+		
+			UordnetKjedetListe<Integer> liste = new UordnetKjedetListe<Integer>();
+			liste.leggTil(1);
+			liste.leggTil(100);
+			liste.leggTil(200);
+			liste.leggTil(4);
+			
+			
+			LinearNode<Integer> temp = liste.getFoerste();
+			
+			for (int i = 0; i<liste.getAntall(); i++) {
+				System.out.println(temp.getElement());
+				temp = temp.getNeste();
+						
+			}
+			
+			System.out.println();
+			
+			System.out.println(liste.inneholder(4));
+			
+		
+	}
+
+}

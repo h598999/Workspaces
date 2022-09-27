@@ -1,0 +1,142 @@
+package no.hvl.dat102;
+
+import java.util.Iterator;
+import java.util.Arrays;
+
+import ADT.DictonaryADT;
+
+public class ArrayDictonary<K,V> implements DictonaryADT<K,V> {
+
+	private Entry<K,V>[] dictonary;
+	private int numberOfEntries;
+	private boolean initialized = false;
+	private static int DEFAULT_VALUE = 25;
+	private int size;
+	
+	public ArrayDictonary() {
+		this(DEFAULT_VALUE);
+	}
+	
+	public ArrayDictonary(int size) {
+		this.size = size;
+		@SuppressWarnings("unchecked")
+		Entry<K,V>[] tempDic = (Entry<K,V>[])new Entry[size];
+		dictonary = tempDic;
+		numberOfEntries = 0;
+		initialized = true;
+	}
+	
+	
+	@Override
+	public void add(K key, V value) {
+		
+		
+		
+		if ((key==null) || (value == null)){
+			throw new IllegalArgumentException();
+		} else {
+			
+			
+			if (containsKey(key)) {
+				dictonary[locateIndex(key)].setValue(value);
+			} else {
+				Entry<K,V> entry = new Entry<>(key,value);
+				
+				dictonary[numberOfEntries] = entry;
+				numberOfEntries++;
+				ensureCapacity();
+			}
+			
+		}
+		
+		
+	}
+
+	@Override
+	public V remove(K key) {
+		int keyIndex = locateIndex(key);
+		V value = null;
+		if (keyIndex!=-1) {
+			value = dictonary[keyIndex].getValue();
+			dictonary[keyIndex] = dictonary[numberOfEntries-1];
+			dictonary[numberOfEntries] = null;
+			numberOfEntries--;
+			
+		} 
+		return value;
+		
+	}
+
+	@Override
+	public V getValue(K key) {
+		int keyIndex = locateIndex(key);
+		if (keyIndex!=-1) {
+			return dictonary[keyIndex].getValue();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public boolean containsKey(K key) {
+		return locateIndex(key)!=-1;
+	}
+
+	@Override
+	public Iterator<K> getKeyIterator() {
+		// TODO Auto-generated method stub
+				return null;
+	}
+
+	@Override
+	public Iterator<V> getValueIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return numberOfEntries == 0;
+	}
+
+	@Override
+	public int getSize() {
+		return numberOfEntries;
+	}
+
+	@Override
+	public void clear() {
+		for (int i = 0; i < numberOfEntries; i++) {
+			remove(dictonary[i].getKey());
+		}
+		
+	}
+	
+	private void ensureCapacity() {
+		if (numberOfEntries==size) {
+			@SuppressWarnings("unchecked")
+			Entry<K,V>[] tempDic = (Entry<K,V>[])new Entry[size*2];
+			
+			for (int i = 0; i<size; i++) {
+				tempDic[i] = dictonary[i];
+			}
+			dictonary = tempDic;
+			
+		}
+	}
+	
+	private int locateIndex(K key) {
+		int i = 0;
+		boolean funnet = false;
+		while (i<size&&!funnet) {
+			if (dictonary[i].getKey().equals(key)) {
+				return i;
+			} else {
+				i++;
+			}
+			
+		}
+		return -1;
+		
+	}
+}

@@ -1,0 +1,20 @@
+
+public class Tester {
+	
+	public static void main(String[] args) {
+		
+		Integer[] tab1 = {6,2,5,7,3,215,67,53,12,6};
+		Integer[] tab2 = tab1;
+		Sorter.IterativeSelectionSort(tab1);
+		System.out.println(Sorter.erSortert(tab1));
+		System.out.println();
+		Sorter.SelectionSortRek(tab2);
+		System.out.println(Sorter.erSortert(tab2));
+		
+		
+		
+		
+	}
+	
+
+}

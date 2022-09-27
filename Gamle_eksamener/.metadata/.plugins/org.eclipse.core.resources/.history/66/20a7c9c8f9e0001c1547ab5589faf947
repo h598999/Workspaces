@@ -1,0 +1,61 @@
+package Oppgave_5;
+
+import Ekstra.BinaerTreNode;
+
+public class KjedetBSTre<T extends Comparable<T>>  {
+	 private int antall;
+	 private BinaerTreNode<T> rot = new BinaerTreNode<T>(null);
+	 public KjedetBSTre() {
+	 antall = 0;
+	rot = null;
+	 }
+	 
+	 public KjedetBSTre(T el) {
+		 rot.setElement(el);
+		 antall = 1;
+	 }
+	 
+	 public void leggTil(T el) {
+		 leggTil(el, rot);
+	 }
+	 
+	 private void leggTil(T el, BinaerTreNode<T> foerste) {
+		 if (foerste.getElement().compareTo(el)<0) {
+			 if (foerste.getVenstre()==null) {
+				 BinaerTreNode<T> nyNode = new BinaerTreNode<T>(el);
+				 foerste.setVenstre(nyNode);
+				 antall++;
+			 }  else {
+				 leggTil(el, foerste.getVenstre());
+			 }
+		 } else {
+			 if (foerste.getHoyre()==null) {
+				 BinaerTreNode<T> nyNode = new BinaerTreNode<T>(el);
+				 foerste.setHoyre(nyNode);
+			 } else {
+				 leggTil(el, foerste.getHoyre());
+			 }
+		 }
+	 }
+	 
+	 public String toString() {
+	 return toString(rot);
+	 }
+	 private String toString(BinaerTreNode<T> p) {
+		 String str = "";
+		 if (p!=null) {
+			 str += p.getElement().toString() + "\n" + toString(p.getVenstre()) + "\n" + toString(p.getHoyre());
+		 }
+		 return str;
+		 
+	 }
+	 public static <T extends Comparable<T>> boolean
+	 verifiserBSTre(BinaerTre<T> detAndre) {
+	return verifiserBSTre(detAndre.getRot()); 
+	 }
+	private static <T extends Comparable<T>> boolean verifiserBSTre(BinaerTreNode<T> p){
+	 //… Fyll ut
+	}
+	// … andre metoder
+	}
+

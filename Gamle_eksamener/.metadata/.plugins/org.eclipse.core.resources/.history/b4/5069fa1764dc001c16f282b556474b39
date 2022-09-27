@@ -1,0 +1,9 @@
+package Oppgave_1;
+
+public class UordnetKjedetListe<T>  {
+
+	private int antall;
+	private LinearNode<T> foerste;
+	private LinearNode<T> siste;
+	
+}

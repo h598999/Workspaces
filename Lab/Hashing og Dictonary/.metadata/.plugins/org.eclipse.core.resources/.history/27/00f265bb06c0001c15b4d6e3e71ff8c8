@@ -1,0 +1,157 @@
+package no.hvl.dat102;
+
+import java.util.Iterator;
+
+import ADT.DictonaryADT;
+import hjelpeklasser.Entry;
+
+public class SortedArrayDictonary<K extends Comparable<? super K>,V> implements DictonaryADT<K,V> {
+	
+	private Entry<K,V>[] dictonary;
+	private final static int DEFAULT_CAPACITY = 35;
+	private int numberOfEntries;
+	int size;
+	
+	public SortedArrayDictonary() {
+		this(DEFAULT_CAPACITY);
+		this.size= DEFAULT_CAPACITY;
+	}
+	
+	public SortedArrayDictonary(int size) {
+		
+		@SuppressWarnings("unchecked")
+		Entry<K,V>[] tempDic = (Entry<K,V>[]) new Entry[size];
+		dictonary = tempDic;
+		this.size=size;
+		numberOfEntries = 0;
+	}
+
+	@Override
+	public void add(K key, V value) {
+		if ((key==null)||(value==null)) {
+			throw new IllegalArgumentException();
+		} else {
+			if (containsKey(key)) {
+				int keyIndex = getKeyIndex(key);
+				dictonary[keyIndex].setValue(value);
+			}
+			else {
+				int i = 0;
+				boolean funnet = false;
+				int funnetIndeks = -1;
+				while(i<numberOfEntries&&!funnet) {
+					if (key.compareTo(dictonary[i].getKey())<0) {
+						funnetIndeks = i;
+						funnet = true;
+					} else {
+						i++;
+					}
+				}
+				if (funnet) {
+					makeRoom(funnetIndeks);
+					dictonary[funnetIndeks] = new Entry<K,V>(key, value);
+					numberOfEntries++;
+				} else {
+					dictonary[numberOfEntries] = new Entry<K,V>(key,value);
+					numberOfEntries++;
+				}
+			}
+		}
+		
+	}
+
+	@Override
+	public V remove(K key) {
+		if (containsKey(key)) {
+			V value = null;
+			int funnetindeks = -1;
+			boolean funnet = false;
+			int i = 0;
+			while(i<numberOfEntries&&!funnet) {
+				if (dictonary[i].getKey().equals(key)) {
+					funnetindeks = i;
+					value = dictonary[i].getValue();
+					funnet = true;
+				} else {
+					i++;
+				}
+			}
+			trimTable(funnetindeks);
+			return value;
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public V getValue(K key) {
+		if (containsKey(key)) {
+		return dictonary[getKeyIndex(key)].getValue();}
+		else {
+			return null;
+		}
+	}
+
+	@Override
+	public boolean containsKey(K key) {
+	return getKeyIndex(key)>=0;
+	}
+
+	@Override
+	public Iterator<K> getKeyIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iterator<V> getValueIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return numberOfEntries == 0;
+	}
+
+	@Override
+	public int getSize() {
+		return size;
+	}
+
+	@Override
+	public void clear() {
+		for (int i = 0; i<numberOfEntries; i++) {
+			remove(dictonary[i].getKey());
+		}
+	}
+	
+	private int getKeyIndex(K key) {
+		boolean funnet = false;
+		int i = 0;
+		
+		while(i<numberOfEntries&&!funnet) {
+			if (dictonary[i].getKey().equals(key)) {
+				return i;
+			} else {
+				i++;
+			}
+			
+		}
+		return -1;
+	}
+	
+	private void makeRoom(int index) {
+		for (int i = numberOfEntries; i<=index; i--) {
+			dictonary[i+1] = dictonary[i];
+		}
+	}
+	
+	private void trimTable(int removedIndex) {
+		for (int i = removedIndex; i<numberOfEntries-1; i++) {
+			dictonary[i] = dictonary[i+1];
+		}
+		numberOfEntries--;
+	}
+
+}

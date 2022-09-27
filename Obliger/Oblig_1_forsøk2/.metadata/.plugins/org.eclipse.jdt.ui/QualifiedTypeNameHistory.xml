@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="no.hvl.data102.Film"/>
+    <fullyQualifiedTypeName name="no.hvl.data102.adt.Sjanger"/>
+    <fullyQualifiedTypeName name="no.hvl.data100.Filmarkiv"/>
+    <fullyQualifiedTypeName name="javax.swing.JOptionPane"/>
+    <fullyQualifiedTypeName name="java.lang.Integer"/>
+    <fullyQualifiedTypeName name="no.hvl.data100.Film"/>
+    <fullyQualifiedTypeName name="no.hvl.data102klient.KlientFilmarkiv"/>
+    <fullyQualifiedTypeName name="no.hvl.data102klient.Meny"/>
+    <fullyQualifiedTypeName name="kjedet.KjedetKoe"/>
+    <fullyQualifiedTypeName name="org.junit.jupiter.api.BeforeEach"/>
+    <fullyQualifiedTypeName name="org.junit.Test"/>
+    <fullyQualifiedTypeName name="exceptions.EmptyCollectionException"/>
+    <fullyQualifiedTypeName name="no.hvl.data102ADT.FilmarkivADT"/>
+    <fullyQualifiedTypeName name="no.hvl.data102ADT.LinearNode"/>
+    <fullyQualifiedTypeName name="adt.KoeADT"/>
+    <fullyQualifiedTypeName name="adt.KoeADTTest"/>
+    <fullyQualifiedTypeName name="java.lang.System"/>
+</qualifiedTypeNameHistroy>

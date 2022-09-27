@@ -1,0 +1,20 @@
+package Insertion_Sort;
+
+public class Oppgave_2_a {
+	
+	public static  <T extends Comparable<? super T>> void Sorteringvedinnsettingmedtoelementer(T[] a, int n) {
+		Sorteringvedinnsettingmedtoelementer(a, 0, n - 1);
+	}
+	
+	public static  <T extends Comparable<? super T>> void Sorteringvedinnsettingmedtoelementer(T[] a, int start, int slutt) {
+	 
+		Sorter.swap(a, start ,Sorter.finnMinstePos(a, start, slutt));
+		for (int i = start+1; i<=slutt; i++) {
+			
+			
+		}
+		
+	}
+	
+
+}

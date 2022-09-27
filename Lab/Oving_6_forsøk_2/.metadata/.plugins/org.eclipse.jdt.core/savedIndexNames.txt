@@ -1,0 +1,7 @@
+INDEX VERSION 1.131+C:\Users\jonas\Desktop\Skule\Dat_102\Workspaces\Lab\Oving_6_forsøk_2\.metadata\.plugins\org.eclipse.jdt.core
+3923088715.index
+1169032274.index
+1865797976.index
+3854995209.index
+721075051.index
+3701954024.index

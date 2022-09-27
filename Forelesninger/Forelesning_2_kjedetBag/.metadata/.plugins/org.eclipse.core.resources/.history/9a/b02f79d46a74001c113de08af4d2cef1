@@ -1,0 +1,22 @@
+package no.hvl.dat100;
+
+public class BagTesting {
+	
+	public static void main(String[] args) {
+		KjedetBag<Person> bag = new KjedetBag<Person>();
+		Person Jonas = new Person("Jonas");
+		Person Kari = new Person("Kari");
+		Person Even = new Person("Even");
+		bag.leggTil(Jonas);
+		bag.leggTil(Even);
+		bag.leggTil(Kari);
+		
+		if (bag.inneholder(Jonas)) {
+			System.out.println("True");
+		} else
+			System.out.println("False");
+	
+		
+	}
+
+}

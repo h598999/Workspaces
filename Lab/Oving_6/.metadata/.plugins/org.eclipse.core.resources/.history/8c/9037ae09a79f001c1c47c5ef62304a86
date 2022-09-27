@@ -1,0 +1,21 @@
+package Insertion_Sort;
+
+public class Maintests {
+
+	public static void main(String[] args) {
+		Integer[] table = new Integer[5];
+		table[0] = 2;
+		table[1] = 1;
+		table[2] = 3;
+		table[4] = 5;
+		table[3] = 4;
+		
+		Oppgave_2_a.Sorteringvedinnsettingmedtoelementer(table, 3);
+		
+		for (int i = 0; i<5; i++) {
+			System.out.println(table[i]);
+		}
+		
+	}
+
+}

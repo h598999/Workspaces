@@ -1,0 +1,63 @@
+package Oppgave_1;
+
+public class UordnetKjedetListe<T extends Comparable<? super T>> {
+
+	private int antall;
+	 private LinearNode<T> foerste, siste;
+	 public UordnetKjedetListe (){
+	 antall = 0;
+	 foerste = null; 
+	 siste = null;
+	 }
+	
+	 public int antallLike(T el) {
+		 int antallLike = 0;
+		 LinearNode<T> temp = foerste;
+		 while(temp!=null) {
+			 if (temp.getElement().equals(el)){
+				 antallLike++;
+			 }
+			 temp = temp.getNeste();
+		 }
+		 return antallLike;
+		 
+	 }
+	 
+	 public T minste () {
+		 
+		 if (!erTom()) {
+		 
+		 LinearNode<T> temp = foerste;
+		 T minste = foerste.getElement();
+		 while(temp!=null) {
+			 if(temp.getElement().compareTo(minste)<0) {
+				 minste = temp.getElement();
+			 }
+			 temp = temp.getNeste();
+		 }
+		 return minste;
+	 } else {
+		 System.out.println("Listen er tom");
+		 return null;
+	 }
+	 }
+	 
+	 public boolean inneholder(T element) {
+		 return inneholderRekk(foerste,element);
+	 }
+	 
+	 private boolean inneholderRek(LinearNode<T> temp, T element) {
+		 if (temp==null) {
+			 return false;
+		 } else if (temp.getElement().equals(element)){
+			 return true;
+		 } else {
+			 return inneholderRek(temp.getNeste(),element);
+		 }
+	 }
+
+	 public boolean erTom() {
+		 return antall==0;
+	 }
+	
+}

@@ -1,0 +1,18 @@
+package Oppgave_5;
+
+import Ekstra.BinaerTreNode;
+
+public class MainTest {
+	
+	public static void main(String[] args) {
+		
+		KjedetBSTre<Integer> Tre = new KjedetBSTre<Integer>(1);
+		Tre.leggTil(4);
+		Tre.leggTil(2);
+		Tre.leggTil(3);
+		BinaerTreNode<Integer> temp = Tre.getRot();
+		System.out.println(temp.getVenstre().getElement());
+		
+	}
+
+}

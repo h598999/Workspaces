@@ -1,0 +1,24 @@
+package Hjelp;
+
+import Entiteter.Vare;
+
+public class ListEntry {
+
+	private int antall;
+	private Vare vare;
+	public int getAntall() {
+		return antall;
+	}
+	public void setAntall(int antall) {
+		this.antall = antall;
+	}
+	public Vare getVare() {
+		return vare;
+	}
+	public void setVare(Vare vare) {
+		this.vare = vare;
+	}
+	
+	
+	
+}

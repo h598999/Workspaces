@@ -1,0 +1,37 @@
+package hjelpeklasser;
+
+public class Node<T> {
+
+	private T data;
+	private Node<T> next;
+	
+	public Node() {
+	
+	}
+	
+	public Node(T datavalue) {
+		this(datavalue, null);
+	}
+	
+	public Node(T datavalue, Node<T> nextNode) {
+		data = datavalue;
+		next = nextNode;
+	}
+	
+	public T getElement() {
+		return data;
+	}
+	
+	public void setElement(T newElement) {
+		data = newElement;
+	}
+	
+	public Node<T> getNext() {
+		return next;
+	}
+	
+	public void setNext(Node<T> newNext) {
+		next = newNext;
+	}
+	
+}

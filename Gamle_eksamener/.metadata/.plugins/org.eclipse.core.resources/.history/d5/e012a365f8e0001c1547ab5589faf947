@@ -1,0 +1,37 @@
+package Oppgave_4;
+
+import Ekstra.LinearNode;
+
+public class KjedetUordnetListe<T extends Comparable<T>> {
+private int antall;
+private LinearNode<T> foerste;
+public KjedetUordnetListe() {
+antall = 0;
+foerste = null;
+}
+
+public void settInn(T el) {
+	LinearNode<T> nyNode = new LinearNode<T>(el);
+	if (antall==0) {
+		foerste = nyNode;
+		antall++;
+	} else {
+		nyNode.setNeste(foerste);
+		foerste = nyNode;
+	}
+}
+
+public String toString() {
+	return toString(foerste);
+}
+
+	private String toString(LinearNode<T> p) {
+		
+		String str = "";
+		if (p!=null) {
+			str += p.getElement().toString() + "\n" + toString(p.getNeste());
+		}
+		return str;
+	}
+}
+

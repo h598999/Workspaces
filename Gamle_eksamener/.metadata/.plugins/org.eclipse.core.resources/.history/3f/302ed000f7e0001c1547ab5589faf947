@@ -1,0 +1,14 @@
+package Oppgave_4;
+
+public class Maintest {
+
+	public static void main(String[] args) {
+		KjedetUordnetListe<Integer> liste = new KjedetUordnetListe<Integer>();
+		liste.leggTil(3);
+		liste.leggTil(2);
+		liste.leggTil(5);
+		System.out.println(liste.toString());
+		
+	}
+	
+}

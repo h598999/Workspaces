@@ -1,0 +1,17 @@
+!SESSION 2022-06-01 08:56:05.934 -----------------------------------------------
+eclipse.buildId=4.22.0.I20211124-1800
+java.version=17.0.1
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=no_NO
+Framework arguments:  -product org.eclipse.epp.package.java.product
+Command-line arguments:  -os win32 -ws win32 -arch x86_64 -product org.eclipse.epp.package.java.product
+
+This is a continuation of log file C:\Users\jonas\Desktop\Skule\Dat_102\Workspaces\Gamle_eksamener\.metadata\.bak_0.log
+Created Time: 2022-06-01 08:56:30.648
+
+!ENTRY org.eclipse.core.jobs 4 2 2022-06-01 08:56:30.648
+!MESSAGE An internal error occurred during: "Update Job".
+!STACK 0
+java.lang.NullPointerException: Cannot invoke "org.eclipse.equinox.p2.core.IProvisioningAgent.getService(java.lang.Class)" because "this.this$0.agent" is null
+	at org.eclipse.equinox.internal.p2.ui.sdk.scheduler.AutomaticUpdateScheduler$1.run(AutomaticUpdateScheduler.java:68)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)

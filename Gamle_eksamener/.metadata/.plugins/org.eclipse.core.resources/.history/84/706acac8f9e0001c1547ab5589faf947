@@ -1,0 +1,15 @@
+package Oppgave_5;
+
+public class MainTest {
+	
+	public static void main(String[] args) {
+		
+		KjedetBSTre<Integer> Tre = new KjedetBSTre<Integer>(1);
+		Tre.leggTil(4);
+		Tre.leggTil(2);
+		Tre.leggTil(3);
+		System.out.println(Tre.toString());
+		
+	}
+
+}

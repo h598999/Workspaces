@@ -1,0 +1,23 @@
+INDEX VERSION 1.131+C:\Users\jonas\Desktop\Skule\Dat_102\Workspaces\Obliger\Oblig_4_SkulePrøve\.metadata\.plugins\org.eclipse.jdt.core
+109626942.index
+4175089725.index
+1865797976.index
+1169032274.index
+3803410269.index
+3687485937.index
+700056388.index
+4218200445.index
+2116145487.index
+74105950.index
+3293562695.index
+3865561987.index
+3923088715.index
+223048316.index
+29391213.index
+1111118079.index
+849949892.index
+1962778635.index
+3255793362.index
+689776570.index
+331828600.index
+2404779300.index

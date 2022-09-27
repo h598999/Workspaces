@@ -1,0 +1,13 @@
+package no.hvl.dat100;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public interface IList {
+	List<Integer> liste = new ArrayList<>(5);
+	
+	public void leggTil(int n) {
+		
+	}
+
+}

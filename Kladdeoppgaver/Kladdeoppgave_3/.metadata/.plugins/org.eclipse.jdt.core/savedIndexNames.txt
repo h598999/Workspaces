@@ -1,0 +1,5 @@
+INDEX VERSION 1.131+C:\Users\jonas\Desktop\Skule\Dat_102\Workspaces\Kladdeoppgaver\Kladdeoppgave_3\.metadata\.plugins\org.eclipse.jdt.core
+3560446822.index
+1865797976.index
+3923088715.index
+3605589059.index

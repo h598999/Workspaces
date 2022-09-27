@@ -1,0 +1,14 @@
+package Oppgave_1;
+
+public class Snippet {
+	private int antall;
+	 private LinearNode<T> foerste, siste;
+	 public UordnetKjedetListe (){
+	 antall = 0;
+	 foerste = null; 
+	 siste = null;
+	 }
+	//… andre metoder i klassen
+	
+}
+

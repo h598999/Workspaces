@@ -1,0 +1,22 @@
+package Oppgave_9;
+
+public class KjedetBSTre<T extends Comparable<T>>	 {
+	 private int antall;
+	 private BinaerTreNode<T> rot;
+	 public KjedetBSTre() {
+	antall = 0;
+	rot = null;
+	 }
+	 
+	 // … get- og set metoder kan du anta
+	 public T finnMinste() {
+	 // fyll ut
+	 }
+	 public int antallBlad() {
+	 return antallBladRek(rot);
+	 }
+	 private int antallBladRek(BinaerTreNode<T> p) {
+	 //… Fyll ut
+	 }
+	 // … andre metoder
+	}

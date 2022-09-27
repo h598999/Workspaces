@@ -1,0 +1,148 @@
+package Dictonaries;
+
+import java.util.Iterator;
+
+import ADT.DictonaryADT;
+import hjelpeklasser.Entry;
+import hjelpeklasser.TableEntry;
+
+public class HashedDictonary<K,V> implements DictonaryADT<K,V> {
+	
+	
+	//The dictonary
+	private int numberOfEntries;
+	private static final int DEFAULT_CAPACITY = 5;
+	private static final int MAX_CAPACITY = 10000;
+
+	//The hashtable
+	private TableEntry<K,V>[] hashTable;
+	private int tableSize;
+	private static final int MAX_SIZE = 2*MAX_CAPACITY;
+	private boolean initialized = false;
+	private static final double LOAD_FACTOR = 0.5;
+	
+	public HashedDictonary() {
+		this(DEFAULT_CAPACITY);
+	}
+	
+	public HashedDictonary(int initialCapacity) {
+		checkCapacity(initialCapacity);
+		numberOfEntries = 0;
+		
+		//Set up hashtable
+		// Initial size of hashtable is the same as initalCapacity if it is a prime number wich is not 2
+		//otherwise increase it until it is prime
+		tableSize = getNextPrime(initialCapacity);
+		checkSize(tableSize);//Check for max array size
+		
+		@SuppressWarnings( "unchecked" )
+		TableEntry<K,V>[] tempTable = (TableEntry<K,V>[]) new TableEntry[tableSize];
+		hashTable = tempTable;
+		initialized = true;
+	}
+	
+	@Override
+	public void add(K key, V value) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public V remove(K key) {
+		
+		checkInitialization();
+		V removedValue = null;
+		
+		int index = getHashIndex(key);
+		index = locate(index,key);
+		
+		if (index != -1) {
+			removedValue = hashTable[index].getValue();
+			hashTable[index].setToRemoved();
+			numberOfEntries--;
+		}
+		
+	}
+
+	@Override
+	public V getValue(K key) {
+		checkInitialization();
+		V value = null;
+		
+		int index = getHashIndex(key);
+		index = locate(index,key);
+		
+		if (index != -1) {
+			value = hashTable[index].getValue();
+		}
+		
+		return value;
+	}
+
+	@Override
+	public boolean containsKey(K key) {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public Iterator<K> getKeyIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Iterator<V> getValueIterator() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int getSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void clear() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	private int locate(int index, K key) {
+		int i = 0;
+		
+		return i;
+	}
+	
+	private int getHashIndex(K key) {
+		int i = 0;
+		
+		return i;
+	}
+	
+	private void checkInitialization() {
+		
+	}
+	
+	private void checkCapacity(int currentCapacity) {
+		
+	}
+	
+	private int getNextPrime(int currentnumber) {
+		int i = 0;
+		
+		return i;
+	}
+	
+	private void checkSize(int size) {
+		
+	}
+
+}

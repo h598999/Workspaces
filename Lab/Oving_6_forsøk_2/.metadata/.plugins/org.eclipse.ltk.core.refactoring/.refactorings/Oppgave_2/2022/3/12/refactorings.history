@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;Oppgave_2_a.TidtakingQuickSort&apos; to &apos;TidtakingInsertionSort&apos;&#x0D;&#x0A;- Original project: &apos;Oppgave_2&apos;&#x0D;&#x0A;- Original element: &apos;Oppgave_2_a.TidtakingQuickSort&apos;&#x0D;&#x0A;- Renamed element: &apos;Oppgave_2_a.TidtakingInsertionSort&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;TidtakingQuickSort&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;Oppgave_2_a{TidtakingQuickSort.java[TidtakingQuickSort" matchStrategy="1" name="TidtakingInsertionSort" qualified="false" references="true" similarDeclarations="false" stamp="1647956261348" textual="false" version="1.0"/>
+</session>

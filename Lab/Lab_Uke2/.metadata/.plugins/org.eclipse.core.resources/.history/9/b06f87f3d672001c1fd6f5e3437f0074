@@ -1,0 +1,11 @@
+package no.hvl.dat100;
+
+import java.util.ArrayList;
+
+public class ArrayList {
+
+	public static void main(String[] args) {
+		ArrayList<Integer> = new ArrayList<>(5);
+	}
+
+}

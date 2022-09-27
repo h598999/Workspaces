@@ -1,0 +1,14 @@
+package JPA;
+
+import java.io.IOException;
+
+public class MainTest {
+	
+	public static void main(String[] args) throws IOException, InterruptedException {
+		
+		VareGetter.getVare(2030);
+		System.out.println();
+		VareGetter.getVare(2031);
+	}
+	
+}

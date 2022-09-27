@@ -1,0 +1,24 @@
+INDEX VERSION 1.131+C:\Users\jonas\Desktop\Skule\Dat_102\Workspaces\Sjølvstudie\.metadata\.plugins\org.eclipse.jdt.core
+1111118079.index
+700056388.index
+986385391.index
+285940771.index
+3803410269.index
+29391213.index
+2404779300.index
+3865561987.index
+4218200445.index
+2116145487.index
+2109112293.index
+109626942.index
+3293562695.index
+3255793362.index
+4175089725.index
+1865797976.index
+223048316.index
+3923088715.index
+689776570.index
+331828600.index
+1645470341.index
+316175252.index
+1962778635.index

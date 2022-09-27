@@ -1,0 +1,34 @@
+package Oppgave_4;
+
+import Ekstra.BinaerTreNode;
+
+public class KjedetBSTre<T extends Comparable<T>>  {
+	 private int antall;
+	 private BinaerTreNode<T> rot;
+	 public KjedetBSTre() {
+	 antall = 0;
+	rot = null;
+	 }
+	 
+	 // … get- og set metoder kan du anta
+	 public String toString() {
+	 return toString(rot);
+	 }
+	 private String toString(BinaerTreNode<T> p) {
+		 String str = "";
+		 if (p!=null) {
+			 str += p.getElement().toString() + "\n" + toString(p.getVenstre()) + "\n" + toString(p.getHoyre());
+		 }
+		 return str;
+		 
+	 }
+	 public static <T extends Comparable<T>> boolean
+	 verifiserBSTre(BinaerTre<T> detAndre) {
+	return verifiserBSTre(detAndre.getRot()); 
+	 }
+	private static <T extends Comparable<T>> boolean verifiserBSTre(BinaerTreNode<T> p){
+	 //… Fyll ut
+	}
+	// … andre metoder
+	}
+

@@ -1,0 +1,65 @@
+package Oppgave_6;
+
+public class KjedetIndeksertListe<T>{
+private LinearNode<T> første = null;
+private LinearNode<T> siste = null;
+private int antall;
+/* Konstruktør */
+KjedetIndeksertListe() {
+//Oppretter første og siste
+
+antall = 0;
+}
+
+KjedetIndeksertListe(LinearNode<T> første, LinearNode<T> siste){
+	this.første = første;
+	this.siste = siste;
+	antall = 0;
+}
+
+public void leggTilForan(T element) {
+	
+	LinearNode<T> nyNode = new LinearNode<T>(element);
+	
+	if (erTom()) {
+		siste = nyNode;
+	}
+	nyNode.setNeste(første);
+	første = nyNode;
+	antall++;
+	
+}
+
+public void fjernDelListe(int indeks, int n) {
+	
+	LinearNode<T> temp = første;
+	int i = 0;
+	while (i<indeks&&temp.getNeste()!=null) {
+		temp = temp.getNeste();
+		i++;
+	}
+	
+	if (i==indeks) {
+		
+		int o = 0;
+		LinearNode<T> temp1 = temp;
+		while (o<indeks&&temp.getNeste()!=null) {
+			temp1 = temp1.getNeste();
+		}
+		
+		temp.setNeste(temp1);
+		antall = antall-n;
+	} else {
+		System.out.println("Ulovlig input");
+	}
+	
+	
+	
+}
+
+public boolean erTom() {
+	return antall==0;
+}
+//andre metoder
+}
+
